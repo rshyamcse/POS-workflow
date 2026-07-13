@@ -15,7 +15,7 @@ export default function KitchenDisplayPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center bg-card p-6 rounded-3xl border border-border/60 shadow-md">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-6 border-b border-border/50 shrink-0">
         <div>
           <h1 className="text-4xl font-black tracking-tight text-primary uppercase">KITCHEN DISPLAY</h1>
           <p className="text-xl text-muted-foreground mt-1 font-semibold">Takeaway orders pending preparation</p>
@@ -35,7 +35,7 @@ export default function KitchenDisplayPage() {
           </p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 gap-[24px]">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-[24px]">
           {kitchenOrders.map(order => (
             <OrderCard
               key={order.id}

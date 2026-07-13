@@ -162,7 +162,7 @@ export default function OrdersPage() {
       )}
 
       {/* HEADER */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-card p-6 rounded-2xl border border-border/60 shadow-sm">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-6 border-b border-border/50 shrink-0 gap-4">
         <div>
           <h1 className="text-3xl font-black tracking-tight text-foreground">Reception Orders</h1>
           <p className="text-muted-foreground mt-1 font-medium">Manage takeaway orders</p>
@@ -230,7 +230,7 @@ export default function OrdersPage() {
           </p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6 pt-2">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-[24px] pt-2">
           {filteredOrders.map(order => (
             <OrderCard
               key={order.id}

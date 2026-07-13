@@ -15,7 +15,7 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-6 pb-12">
-      <div className="bg-card p-6 rounded-2xl border border-border/60 shadow-sm">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-6 border-b border-border/50 shrink-0">
         <h1 className="text-3xl font-black tracking-tight text-foreground">Active Dashboard</h1>
         <p className="text-muted-foreground mt-1 font-medium">Real-time overview of current takeaway orders.</p>
       </div>
@@ -29,7 +29,7 @@ export default function DashboardPage() {
           </p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-[24px]">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-[24px]">
           {activeOrders.map(order => (
             <OrderCard
               key={order.id}
