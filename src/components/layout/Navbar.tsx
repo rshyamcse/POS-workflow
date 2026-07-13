@@ -10,12 +10,20 @@ import {
   Sparkles,
   Clock,
   Menu,
-  Bell
+  Bell,
+  ChevronDown
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export function Navbar() {
   const { orders } = usePOS();
@@ -81,44 +89,59 @@ export function Navbar() {
         </div>
       </div>
 
-      {/* Center: Condensed Premium Status Pills */}
-      <div className="hidden lg:flex items-center gap-2 justify-center shrink-0">
-        <StatusPill
-          label="New"
-          count={counts.NEW}
-          icon={Sparkles}
-          colorClass="text-blue-500"
-          bgClass="bg-blue-500/5 hover:bg-blue-500/10"
-          borderClass="border-blue-500/20 hover:border-blue-500/40 shadow-[0_0_15px_rgba(59,130,246,0)] hover:shadow-[0_0_15px_rgba(59,130,246,0.15)]"
-          isPulsing={pulse.NEW}
-        />
-        <StatusPill
-          label="Preparing"
-          count={counts.PREPARING}
-          icon={Utensils}
-          colorClass="text-orange-500"
-          bgClass="bg-orange-500/5 hover:bg-orange-500/10"
-          borderClass="border-orange-500/20 hover:border-orange-500/40 shadow-[0_0_15px_rgba(249,115,22,0)] hover:shadow-[0_0_15px_rgba(249,115,22,0.15)]"
-          isPulsing={pulse.PREPARING}
-        />
-        <StatusPill
-          label="Ready"
-          count={counts.READY}
-          icon={CheckCircle2}
-          colorClass="text-green-500"
-          bgClass="bg-green-500/5 hover:bg-green-500/10"
-          borderClass="border-green-500/20 hover:border-green-500/40 shadow-[0_0_15px_rgba(34,197,94,0)] hover:shadow-[0_0_15px_rgba(34,197,94,0.15)]"
-          isPulsing={pulse.READY}
-        />
-        <StatusPill
-          label="Delivered"
-          count={counts.DELIVERED}
-          icon={Bike}
-          colorClass="text-muted-foreground"
-          bgClass="bg-secondary/40 hover:bg-secondary"
-          borderClass="border-border/40 hover:border-border/80 shadow-none"
-          isPulsing={pulse.DELIVERED}
-        />
+      {/* Center: Status Dropdown */}
+      <div className="hidden lg:flex items-center justify-center shrink-0">
+        <DropdownMenu>
+          <DropdownMenuTrigger className={cn(
+            "flex items-center gap-3 px-5 h-[40px] rounded-full bg-secondary/40 border border-border/60 hover:bg-secondary transition-all cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-primary",
+            (pulse.NEW || pulse.PREPARING || pulse.READY || pulse.DELIVERED) && "scale-105 shadow-md shadow-primary/10 border-primary/40 bg-primary/5"
+          )}>
+            <div className="flex items-center gap-2">
+              <div className="relative flex items-center justify-center">
+                <Menu className="w-4 h-4 text-muted-foreground" />
+                {(counts.NEW > 0 || pulse.NEW) && (
+                  <span className="absolute -top-1 -right-1 flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+                  </span>
+                )}
+              </div>
+              <span className="text-[13px] font-bold text-foreground">Order Status</span>
+            </div>
+            <ChevronDown className="w-4 h-4 text-muted-foreground opacity-50" />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="center" className="w-56 rounded-xl border-border/60 shadow-xl bg-background p-2">
+            <DropdownMenuItem className="flex justify-between items-center px-3 py-2.5 rounded-lg cursor-pointer focus:bg-blue-500/10 focus:text-blue-500 transition-colors group">
+              <div className="flex items-center gap-3 font-semibold text-foreground group-focus:text-blue-500">
+                <Sparkles className="w-4 h-4 text-blue-500" /> New
+              </div>
+              <span className="font-black text-[15px]">{counts.NEW}</span>
+            </DropdownMenuItem>
+            
+            <DropdownMenuItem className="flex justify-between items-center px-3 py-2.5 rounded-lg cursor-pointer focus:bg-orange-500/10 focus:text-orange-500 transition-colors group">
+              <div className="flex items-center gap-3 font-semibold text-foreground group-focus:text-orange-500">
+                <Utensils className="w-4 h-4 text-orange-500" /> Preparing
+              </div>
+              <span className="font-black text-[15px]">{counts.PREPARING}</span>
+            </DropdownMenuItem>
+
+            <DropdownMenuItem className="flex justify-between items-center px-3 py-2.5 rounded-lg cursor-pointer focus:bg-green-500/10 focus:text-green-500 transition-colors group">
+              <div className="flex items-center gap-3 font-semibold text-foreground group-focus:text-green-500">
+                <CheckCircle2 className="w-4 h-4 text-green-500" /> Ready
+              </div>
+              <span className="font-black text-[15px]">{counts.READY}</span>
+            </DropdownMenuItem>
+
+            <DropdownMenuSeparator className="my-1.5 bg-border/50" />
+            
+            <DropdownMenuItem className="flex justify-between items-center px-3 py-2.5 rounded-lg cursor-pointer focus:bg-secondary focus:text-foreground transition-colors group">
+              <div className="flex items-center gap-3 font-semibold text-muted-foreground group-focus:text-foreground">
+                <Bike className="w-4 h-4" /> Delivered
+              </div>
+              <span className="font-black text-[15px] text-muted-foreground group-focus:text-foreground">{counts.DELIVERED}</span>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
 
       {/* Right: Tools & Profile */}
@@ -142,24 +165,5 @@ export function Navbar() {
         </div>
       </div>
     </header>
-  );
-}
-
-// Condensed Sub-component for Status Pills
-function StatusPill({ label, count, icon: Icon, colorClass, bgClass, borderClass, isPulsing }: any) {
-  return (
-    <button className={cn(
-      "flex items-center gap-2 px-4 h-[40px] rounded-full border transition-all duration-200 ease-in-out cursor-pointer",
-      bgClass, borderClass,
-      isPulsing && "scale-105 shadow-md"
-    )}>
-      <Icon className={cn("w-[16px] h-[16px]", colorClass)} />
-      <span className={cn("text-[13px] font-bold tracking-wide", colorClass)}>
-        {label}
-      </span>
-      <span className="text-[16px] font-black text-foreground ml-1">
-        {count}
-      </span>
-    </button>
   );
 }

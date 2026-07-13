@@ -115,35 +115,35 @@ export function OrderCard({ order, mode, onUpdateStatus, className = '' }: Order
   return (
     <div
       className={cn(
-        "flex flex-col bg-card rounded-[20px] border-[1.5px] overflow-hidden transition-all duration-200 ease-in-out hover:-translate-y-1",
+        "flex flex-col h-full bg-card rounded-[20px] border-[1.5px] overflow-hidden transition-all duration-200 ease-in-out hover:-translate-y-1",
         widthClass,
         colors.cardBorder,
         className
       )}
     >
-      {/* LINE 1: Header - Single Horizontal Row */}
-      <div className="flex items-center gap-3 p-4 pb-3 shrink-0">
-        <span className="text-[20px] font-black leading-none text-foreground tracking-tighter shrink-0">
+      {/* LINE 1: Header - Flex Wrap for tight spaces */}
+      <div className="flex flex-wrap items-center gap-2 p-4 pb-3 shrink-0">
+        <span className="text-[18px] sm:text-[20px] font-black leading-none text-foreground tracking-tighter truncate max-w-[130px]">
           {order.orderNumber}
         </span>
         <div className={cn(
-          "px-2.5 py-1 rounded-[8px] text-[10px] font-black uppercase tracking-wider shrink-0 flex items-center justify-center",
+          "px-2 py-1 rounded-[6px] text-[10px] font-black uppercase tracking-wider flex items-center justify-center shrink-0",
           colors.badgeBg
         )}>
           {order.status}
         </div>
-        <span className="text-[12px] font-semibold text-muted-foreground ml-auto shrink-0 whitespace-nowrap">
+        <span className="text-[11px] sm:text-[12px] font-semibold text-muted-foreground ml-auto shrink-0 text-right">
           {timeDisplay}
         </span>
       </div>
 
       {/* LINE 2: Customer Info */}
-      <div className="px-4 py-2.5 bg-secondary/20 border-y border-border/40 shrink-0 flex items-center gap-2.5">
+      <div className="px-4 py-2.5 bg-secondary/20 border-y border-border/40 shrink-0 flex items-center gap-2">
         <div className="w-6 h-6 rounded-full bg-secondary border border-border/60 flex items-center justify-center shrink-0">
           <User className="w-3.5 h-3.5 text-muted-foreground" />
         </div>
-        <span className="text-[13px] font-bold text-foreground truncate">Walk-in</span>
-        <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground ml-auto bg-background px-2 py-0.5 rounded-[6px] border border-border/50 shrink-0">
+        <span className="text-[12px] sm:text-[13px] font-bold text-foreground truncate flex-1">Walk-in</span>
+        <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-wider text-muted-foreground bg-background px-2 py-0.5 rounded-[6px] border border-border/50 shrink-0">
           Takeaway
         </span>
       </div>
@@ -152,15 +152,15 @@ export function OrderCard({ order, mode, onUpdateStatus, className = '' }: Order
       <div className="flex-1 p-4 flex flex-col gap-4 bg-card">
         {order.items.map((item, idx) => (
           <div key={item.id || idx} className="flex flex-col pb-4 border-b border-border/40 last:border-0 last:pb-0">
-            <div className="flex justify-between items-start gap-3">
+            <div className="flex justify-between items-start gap-2">
               <span className={cn(
-                "font-bold text-foreground leading-tight text-[15px]",
+                "font-bold text-foreground leading-tight text-[14px] sm:text-[15px] flex-1 break-words",
                 isFullScreenMode && "text-[24px]"
               )}>
                 {item.name}
               </span>
               <span className={cn(
-                "font-black bg-secondary text-foreground px-2.5 py-1 rounded-[8px] border border-border/50 shrink-0 text-[13px]",
+                "font-black bg-secondary text-foreground px-2.5 py-1 rounded-[8px] border border-border/50 shrink-0 text-[12px] sm:text-[13px] ml-2",
                 isFullScreenMode && "text-[20px]"
               )}>
                 ×{item.quantity}

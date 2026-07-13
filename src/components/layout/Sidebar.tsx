@@ -54,17 +54,17 @@ export function Sidebar({ onItemClick }: { onItemClick?: () => void }) {
           {!collapsed && (
             <div className="flex flex-col flex-1 overflow-hidden">
               <span className="text-lg font-black text-foreground truncate">
-                QSW CAFE
+                Bloom cafe
               </span>
               <div className="flex items-center text-xs font-semibold text-muted-foreground mt-0.5 gap-1.5">
                 <span className="text-green-500 flex items-center gap-1"><Circle className="w-2 h-2 fill-green-500" /> Online</span>
                 <span>•</span>
-                <span>Morning Shift</span>
+                <span>Evening Shift</span>
               </div>
             </div>
           )}
         </div>
-        
+
         {/* Collapse Button (Desktop Only) */}
         <Button
           variant="outline"
@@ -86,7 +86,7 @@ export function Sidebar({ onItemClick }: { onItemClick?: () => void }) {
 
         {navItems.map((item) => {
           const isActive = pathname === item.href;
-          
+
           const LinkContent = (
             <Link
               href={item.href}
@@ -94,8 +94,8 @@ export function Sidebar({ onItemClick }: { onItemClick?: () => void }) {
               className={cn(
                 "group relative flex items-center gap-4 rounded-[16px] p-2 pr-4 text-[15px] font-semibold transition-all duration-300 ease-in-out",
                 isActive
-                  ? "bg-white text-black shadow-lg shadow-black/5"
-                  : "text-muted-foreground hover:bg-secondary hover:text-foreground",
+                  ? "bg-secondary text-foreground shadow-sm ring-1 ring-border"
+                  : "text-muted-foreground hover:bg-secondary/50 hover:text-foreground",
                 collapsed && "justify-center pr-2"
               )}
             >
@@ -107,7 +107,7 @@ export function Sidebar({ onItemClick }: { onItemClick?: () => void }) {
               {/* Rounded Square Icon */}
               <div className={cn(
                 "flex items-center justify-center h-[44px] w-[44px] shrink-0 rounded-[12px] transition-colors duration-300",
-                isActive ? "bg-transparent text-black" : "bg-background border border-border/50 text-muted-foreground group-hover:text-foreground group-hover:border-foreground/20"
+                isActive ? "bg-primary text-primary-foreground shadow-md shadow-primary/20" : "bg-background border border-border/50 text-muted-foreground group-hover:text-foreground group-hover:border-foreground/20"
               )}>
                 <item.icon className="h-5 w-5" />
               </div>

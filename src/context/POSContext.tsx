@@ -126,7 +126,7 @@ export function POSProvider({ children }: { children: React.ReactNode }) {
     if (savedTheme) {
       setTheme(savedTheme);
     } else {
-      localStorage.setItem('qsw_theme', 'dark');
+      localStorage.setItem('qsw_theme', 'light');
     }
 
     setIsLoaded(true);
@@ -145,7 +145,7 @@ export function POSProvider({ children }: { children: React.ReactNode }) {
         setSettings(JSON.parse(e.newValue));
       }
       if (e.key === 'qsw_theme' && e.newValue) {
-        setTheme(e.newValue as 'dark' | 'light');
+        setTheme(e.newValue as 'light' | 'dark');
       }
     };
     window.addEventListener('storage', handleStorageChange);
@@ -153,15 +153,15 @@ export function POSProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   useEffect(() => {
-    if (theme === 'dark') {
-      document.documentElement.classList.add('dark');
+    if (theme === 'light') {
+      document.documentElement.classList.add('light');
     } else {
       document.documentElement.classList.remove('dark');
     }
   }, [theme]);
 
   const toggleTheme = () => {
-    const newTheme = theme === 'dark' ? 'light' : 'dark';
+    const newTheme = theme === 'light' ? 'dark' : 'light';
     setTheme(newTheme);
     localStorage.setItem('qsw_theme', newTheme);
   };
