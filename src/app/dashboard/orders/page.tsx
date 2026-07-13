@@ -164,11 +164,15 @@ export default function OrdersPage() {
       )}
 
       {/* PREMIUM PAGE HEADER */}
-      <div className="flex items-center justify-between pb-4 border-b border-border/60 shrink-0 gap-4">
-        <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
-          <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-foreground">Reception Orders</h1>
+      <div className="flex flex-col sm:flex-row items-center justify-between py-4 px-4 sm:px-8 gap-4 border-b border-border/80 bg-card/50 backdrop-blur-md sticky top-0 z-20 shrink-0 shadow-sm rounded-xl sm:rounded-2xl mb-6">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-center sm:text-left">
+          <h1 className="text-2xl sm:text-3xl font-black tracking-tight uppercase text-foreground">
+            Reception Orders
+          </h1>
           <span className="hidden sm:block text-border/60">|</span>
-          <p className="text-sm font-bold text-muted-foreground">Manage takeaway orders</p>
+          <p className="text-sm sm:text-base text-muted-foreground font-bold tracking-wide">
+            Manage takeaway orders
+          </p>
         </div>
 
         <div className="flex items-center gap-3 shrink-0">

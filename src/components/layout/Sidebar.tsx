@@ -26,8 +26,8 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip
 const navItems = [
   { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { href: '/dashboard/orders', label: 'Orders', icon: Store },
-  { href: '/dashboard/kitchen', label: 'Kitchen Display', icon: ChefHat },
-  { href: '/dashboard/waiting', label: 'Waiting Display', icon: MonitorPlay },
+  { href: '/dashboard/kitchen', label: 'Kitchen Screen', icon: ChefHat },
+  { href: '/dashboard/waiting', label: 'Waiting Screen', icon: MonitorPlay },
   { href: '/dashboard/delivered', label: 'Delivered', icon: Bike },
 ];
 
@@ -39,7 +39,7 @@ export function Sidebar({ onItemClick }: { onItemClick?: () => void }) {
   return (
     <aside
       className={cn(
-        "sticky top-0 z-30 flex h-screen flex-col border-r border-border/80 bg-background transition-all duration-300 ease-in-out shrink-0 select-none shadow-sm",
+        "sticky top-0 z-30 flex h-screen flex-col border-r border-border/80 bg-[#FFFFFF] dark:bg-[#111111] transition-all duration-300 ease-in-out shrink-0 select-none shadow-sm",
         collapsed ? "w-[80px]" : "w-[280px]"
       )}
     >

@@ -169,6 +169,15 @@ export function POSProvider({ children }: { children: React.ReactNode }) {
     const newTheme = theme === 'light' ? 'dark' : 'light';
     setTheme(newTheme);
     localStorage.setItem('qsw_theme', newTheme);
+    
+    // Synchronously update DOM to avoid React render cycle latency
+    if (newTheme === 'dark') {
+      document.documentElement.classList.add('dark');
+      document.documentElement.classList.remove('light');
+    } else {
+      document.documentElement.classList.remove('dark');
+      document.documentElement.classList.add('light');
+    }
   };
 
   const saveOrders = (newOrders: Order[]) => {

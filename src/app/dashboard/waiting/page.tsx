@@ -17,24 +17,24 @@ export default function WaitingDisplayPage() {
     <div className="flex flex-col h-full min-h-screen bg-background pb-8">
       
       {/* CUSTOMER DISPLAY HEADER */}
-      <div className="flex items-center justify-between p-8 px-10 border-b-2 border-border/80 bg-card/50 backdrop-blur-md sticky top-0 z-10 shrink-0 shadow-sm">
-        <div className="flex flex-col">
-          <h1 className="text-5xl font-black tracking-tighter uppercase text-foreground">
+      <div className="flex flex-col sm:flex-row items-center justify-between py-4 px-8 gap-4 border-b border-border/80 bg-card/50 backdrop-blur-md sticky top-0 z-10 shrink-0 shadow-sm">
+        <div className="flex flex-col items-center sm:items-start text-center sm:text-left">
+          <h1 className="text-2xl sm:text-3xl font-black tracking-tight uppercase text-foreground">
             Order Status Display
           </h1>
-          <p className="text-2xl text-muted-foreground mt-2 font-bold tracking-wide">
+          <p className="text-sm sm:text-base text-muted-foreground mt-0.5 font-bold tracking-wide">
             Live updates — Please keep your order number ready
           </p>
         </div>
         
-        <div className="flex items-center gap-8 text-2xl font-black bg-secondary/30 p-4 rounded-3xl border border-border/50">
-          <div className="flex items-center gap-3 bg-orange-500/10 px-6 py-3 rounded-2xl border border-orange-500/20">
-            <span className="w-5 h-5 rounded-full bg-orange-500 shadow-[0_0_15px_rgba(249,115,22,0.6)]" />
-            <span className="text-orange-500">Preparing</span>
+        <div className="flex items-center gap-4 text-base sm:text-lg font-black bg-secondary/30 p-2 sm:p-2.5 rounded-2xl border border-border/50">
+          <div className="flex items-center gap-2.5 bg-orange-500/10 px-4 py-2 rounded-xl border border-orange-500/20">
+            <span className="w-3.5 h-3.5 rounded-full bg-orange-500 shadow-[0_0_10px_rgba(249,115,22,0.6)]" />
+            <span className="text-orange-500 uppercase tracking-wider text-sm">Preparing</span>
           </div>
-          <div className="flex items-center gap-3 bg-green-500/10 px-6 py-3 rounded-2xl border border-green-500/20">
-            <span className="w-5 h-5 rounded-full bg-green-500 animate-pulse shadow-[0_0_15px_rgba(34,197,94,0.6)]" />
-            <span className="text-green-500">Ready for Pickup</span>
+          <div className="flex items-center gap-2.5 bg-green-500/10 px-4 py-2 rounded-xl border border-green-500/20">
+            <span className="w-3.5 h-3.5 rounded-full bg-green-500 animate-pulse shadow-[0_0_10px_rgba(34,197,94,0.6)]" />
+            <span className="text-green-500 uppercase tracking-wider text-sm">Ready</span>
           </div>
         </div>
       </div>

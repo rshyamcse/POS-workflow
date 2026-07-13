@@ -68,7 +68,7 @@ export function Navbar() {
   }, [counts, pulse]);
 
   return (
-    <header className="sticky top-0 z-20 flex h-20 items-center justify-between border-b border-border/80 bg-background/80 backdrop-blur-2xl px-6 shrink-0 shadow-sm">
+    <header className="sticky top-0 z-20 flex h-20 items-center justify-between border-b border-border/80 bg-[#FFFFFF]/80 dark:bg-[#111111]/80 backdrop-blur-2xl px-6 shrink-0 shadow-sm">
 
       {/* Left: Brand / Search */}
       <div className="flex items-center gap-4 flex-1">

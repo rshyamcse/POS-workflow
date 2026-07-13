@@ -34,22 +34,28 @@ export default function DeliveredOrdersPage() {
   return (
     <div className="space-y-6 pb-12 max-w-4xl mx-auto w-full">
       {/* PREMIUM HEADER */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-6 border-b border-border/60 shrink-0 gap-4">
-        <div>
-          <h1 className="text-3xl font-black tracking-tight text-foreground flex items-center gap-3">
-            <History className="h-7 w-7 text-primary" />
-            Order History
-          </h1>
-          <p className="text-muted-foreground mt-1.5 font-semibold">Complete timeline of all delivered takeaway orders.</p>
+      <div className="flex flex-col sm:flex-row items-center justify-between py-4 px-4 sm:px-8 gap-4 border-b border-border/80 bg-card/50 backdrop-blur-md sticky top-0 z-20 shrink-0 shadow-sm rounded-xl sm:rounded-2xl mb-6 -mx-2 sm:mx-0">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 text-center sm:text-left">
+          <div className="h-10 w-10 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0 mx-auto sm:mx-0">
+            <History className="h-5 w-5 text-primary" />
+          </div>
+          <div className="flex flex-col">
+            <h1 className="text-2xl sm:text-3xl font-black tracking-tight uppercase text-foreground">
+              Order History
+            </h1>
+            <p className="text-sm sm:text-base text-muted-foreground mt-0.5 font-bold tracking-wide">
+              Timeline of delivered orders
+            </p>
+          </div>
         </div>
 
-        <div className="relative max-w-xs w-full">
+        <div className="relative w-full sm:w-auto sm:max-w-xs shrink-0">
           <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input
-            placeholder="Search by Order # or Item..."
+            placeholder="Search by Order #..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-10 h-11 bg-secondary/30 border-border/80 rounded-xl text-foreground font-bold"
+            className="pl-10 h-11 w-full bg-secondary/50 border-border/80 rounded-xl text-foreground font-bold shadow-sm transition-colors focus:bg-background"
           />
         </div>
       </div>

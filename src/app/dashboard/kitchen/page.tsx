@@ -18,20 +18,24 @@ export default function KitchenDisplayPage() {
     <div className="flex flex-col h-full min-h-screen bg-background pb-8">
       
       {/* KDS Header */}
-      <div className="flex items-center justify-between p-6 px-8 border-b border-border/80 bg-card/50 backdrop-blur-md sticky top-0 z-10 shrink-0">
-        <div className="flex items-center gap-4">
-          <div className="h-14 w-14 rounded-2xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center">
-            <ChefHat className="h-7 w-7 text-orange-500" />
+      <div className="flex flex-col sm:flex-row items-center justify-between py-4 px-8 gap-4 border-b border-border/80 bg-card/50 backdrop-blur-md sticky top-0 z-10 shrink-0 shadow-sm">
+        <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-4 text-center sm:text-left">
+          <div className="h-10 w-10 rounded-xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center shrink-0">
+            <ChefHat className="h-5 w-5 text-orange-500" />
           </div>
           <div className="flex flex-col">
-            <h1 className="text-4xl font-black tracking-tight text-foreground uppercase">Kitchen Display</h1>
-            <p className="text-lg text-muted-foreground mt-0.5 font-bold tracking-wide">Takeaway orders pending preparation</p>
+            <h1 className="text-2xl sm:text-3xl font-black tracking-tight uppercase text-foreground">
+              Kitchen Display
+            </h1>
+            <p className="text-sm sm:text-base text-muted-foreground mt-0.5 font-bold tracking-wide">
+              Takeaway orders pending preparation
+            </p>
           </div>
         </div>
         
         <div className="flex items-center gap-4">
-          <div className="px-6 py-3 rounded-2xl bg-secondary/50 border border-border/60">
-            <span className="text-xl font-black text-foreground">{kitchenOrders.length} ORDERS</span>
+          <div className="px-4 py-2 rounded-xl bg-secondary/50 border border-border/60">
+            <span className="text-base sm:text-lg font-black text-foreground">{kitchenOrders.length} ORDERS</span>
           </div>
         </div>
       </div>
