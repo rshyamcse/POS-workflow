@@ -17,9 +17,8 @@ import { Sidebar } from './Sidebar';
 import { usePOS } from '@/context/POSContext';
 
 export function Navbar() {
-  const [isDark, setIsDark] = useState(true);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const { orders } = usePOS();
+  const { orders, theme, toggleTheme } = usePOS();
 
   // Real-time Order Counts for every status
   const counts = {
@@ -29,14 +28,6 @@ export function Navbar() {
     delivered: orders.filter(o => o.status === 'DELIVERED').length,
     totalActive: orders.filter(o => o.status !== 'DELIVERED').length,
   };
-
-  useEffect(() => {
-    if (isDark) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-  }, [isDark]);
 
   return (
     <header className="sticky top-0 z-40 flex h-[72px] items-center justify-between border-b border-border/60 bg-background/80 px-4 md:px-6 backdrop-blur-xl shadow-sm shrink-0">
@@ -102,11 +93,11 @@ export function Navbar() {
         <Button
           variant="ghost"
           size="icon"
-          onClick={() => setIsDark(!isDark)}
+          onClick={toggleTheme}
           className="h-10 w-10 rounded-xl hover:bg-secondary border border-transparent hover:border-border/50 transition-all text-foreground shrink-0"
           title="Toggle Dark/Light Theme"
         >
-          {isDark ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+          {theme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
         </Button>
       </div>
     </header>
