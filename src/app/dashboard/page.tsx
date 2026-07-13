@@ -1,13 +1,12 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import { usePOS } from '@/context/POSContext';
-import { ShoppingBag, CheckCircle2 } from 'lucide-react';
+import { CheckCircle2 } from 'lucide-react';
 import { OrderCard } from '@/components/orders/OrderCard';
 
 export default function DashboardPage() {
   const { orders, updateOrderStatus, globalSearchQuery } = usePOS();
-  const [isFullscreen, setIsFullscreen] = useState(false);
   
   // Sort: Newest first -> Status grouped
   const statusWeight: Record<string, number> = { 'NEW': 1, 'PREPARING': 2, 'READY': 3, 'DELIVERED': 4 };

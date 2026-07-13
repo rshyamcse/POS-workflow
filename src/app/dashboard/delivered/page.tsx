@@ -71,7 +71,7 @@ export default function DeliveredOrdersPage() {
             <div className="h-1.5 w-1.5 bg-background rounded-full" />
           </div>
 
-          {searchResults.map((order, idx) => {
+          {searchResults.map((order) => {
             const isExpanded = expandedOrders[order.id];
             const deliveryTime = order.deliveredAt ? format(order.deliveredAt, "MMM d, yyyy • hh:mm a") : 'Unknown Time';
 
