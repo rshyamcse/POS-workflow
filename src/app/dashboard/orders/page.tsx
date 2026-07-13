@@ -22,6 +22,7 @@ import {
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { OrderCard } from '@/components/orders/OrderCard';
 
 export default function OrdersPage() {
   const { orders, menu, categories, createOrder, updateOrderStatus } = usePOS();
@@ -75,7 +76,7 @@ export default function OrdersPage() {
   // Filter Orders inside Search Dialog
   const searchResults = orders.filter(order => {
     const matchesStatus = searchStatus === 'ALL' || order.status === searchStatus;
-    const matchesQuery = !searchQuery.trim() || 
+    const matchesQuery = !searchQuery.trim() ||
       order.orderNumber.toLowerCase().includes(searchQuery.toLowerCase()) ||
       order.items.some(i => i.name.toLowerCase().includes(searchQuery.toLowerCase()));
     return matchesStatus && matchesQuery;
@@ -151,7 +152,7 @@ export default function OrdersPage() {
 
   return (
     <div className="space-y-6 relative pb-12">
-      
+
       {/* FLOATING SUCCESS TOAST */}
       {toastMessage && (
         <div className="fixed top-24 right-8 z-50 flex items-center gap-3 bg-green-500 text-white px-5 py-3.5 rounded-2xl shadow-2xl animate-in fade-in slide-in-from-top-5 duration-300 font-bold border border-green-400">
@@ -188,7 +189,7 @@ export default function OrdersPage() {
             className="bg-white text-black hover:bg-white/90 dark:bg-white dark:text-black font-black h-12 px-6 rounded-xl shadow-lg hover:scale-105 hover:shadow-xl transition-all flex items-center gap-2 text-base"
           >
             <Plus className="h-5 w-5" />
-            <span>+ New Order</span>
+            <span>New Order</span>
           </Button>
         </div>
       </div>
@@ -204,16 +205,14 @@ export default function OrdersPage() {
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
-              className={`flex items-center gap-2.5 px-5 py-3 rounded-2xl font-bold text-sm transition-all whitespace-nowrap border ${
-                isActive
+              className={`flex items-center gap-2.5 px-5 py-3 rounded-2xl font-bold text-sm transition-all whitespace-nowrap border ${isActive
                   ? 'bg-primary text-primary-foreground border-primary shadow-md shadow-primary/20 scale-[1.02]'
                   : 'bg-card text-muted-foreground border-border/60 hover:bg-secondary/60 hover:text-foreground'
-              }`}
+                }`}
             >
               <span>{label}</span>
-              <span className={`px-2 py-0.5 rounded-lg text-xs font-mono ${
-                isActive ? 'bg-primary-foreground/20 text-primary-foreground' : 'bg-secondary text-foreground'
-              }`}>
+              <span className={`px-2 py-0.5 rounded-lg text-xs font-mono ${isActive ? 'bg-primary-foreground/20 text-primary-foreground' : 'bg-secondary text-foreground'
+                }`}>
                 {count}
               </span>
             </button>
@@ -233,82 +232,12 @@ export default function OrdersPage() {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6 pt-2">
           {filteredOrders.map(order => (
-            <Card key={order.id} className="overflow-hidden border-border/60 shadow-sm hover:shadow-md transition-all flex flex-col rounded-3xl bg-card">
-              <CardHeader className="pb-3 bg-secondary/30 border-b border-border/50">
-                <div className="flex justify-between items-start">
-                  <div>
-                    <CardTitle className="text-2xl font-black text-primary">{order.orderNumber}</CardTitle>
-                    <div className="flex items-center text-xs font-semibold text-muted-foreground mt-1 gap-1">
-                      <Clock className="w-3.5 h-3.5" />
-                      {formatDistanceToNow(order.createdAt, { addSuffix: true })}
-                    </div>
-                  </div>
-                  <div className={`px-3 py-1 rounded-full border text-xs font-black uppercase ${getStatusColor(order.status)}`}>
-                    {order.status}
-                  </div>
-                </div>
-              </CardHeader>
-              
-              <CardContent className="pt-4 flex-1">
-                <ul className="space-y-3">
-                  {order.items.map(item => (
-                    <li key={item.id} className="flex justify-between items-start text-sm border-b border-border/30 pb-2.5 last:border-0 last:pb-0">
-                      <div className="flex gap-3">
-                        <span className="font-extrabold text-foreground bg-secondary px-2.5 py-0.5 rounded-lg text-xs min-w-6 text-center h-fit shrink-0">
-                          {item.quantity}x
-                        </span>
-                        <div>
-                          <p className="font-bold text-foreground text-base">{item.name}</p>
-                          {item.notes && (
-                            <p className="text-xs text-orange-400 font-semibold italic mt-0.5 border-l-2 border-orange-400/60 pl-2 whitespace-pre-line">
-                              {item.notes}
-                            </p>
-                          )}
-                        </div>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              </CardContent>
-
-              {/* ACTION BUTTON (ONLY NEXT VALID ACTION) */}
-              <CardFooter className="bg-secondary/15 p-4 border-t border-border/50 flex gap-2 justify-end">
-                {order.status === 'NEW' && (
-                  <Button 
-                    variant="outline" 
-                    className="w-full text-orange-400 border-orange-500/40 hover:bg-orange-500/10 font-bold h-12 text-base rounded-2xl shadow-sm"
-                    onClick={() => updateOrderStatus(order.id, 'PREPARING')}
-                  >
-                    <Utensils className="w-4 h-4 mr-2" />
-                    Preparing
-                  </Button>
-                )}
-                {order.status === 'PREPARING' && (
-                  <Button 
-                    variant="outline" 
-                    className="w-full text-green-400 border-green-500/40 hover:bg-green-500/10 font-bold h-12 text-base rounded-2xl shadow-sm"
-                    onClick={() => updateOrderStatus(order.id, 'READY')}
-                  >
-                    <CheckCircle2 className="w-4 h-4 mr-2" />
-                    Ready
-                  </Button>
-                )}
-                {order.status === 'READY' && (
-                  <Button 
-                    className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-black h-12 text-base rounded-2xl shadow-md"
-                    onClick={() => updateOrderStatus(order.id, 'DELIVERED')}
-                  >
-                    <Bike className="w-4 h-4 mr-2" />
-                    Delivered
-                  </Button>
-                )}
-                {order.status === 'DELIVERED' && (
-                  <div className="w-full text-center py-2 text-xs font-bold uppercase tracking-wider text-muted-foreground bg-secondary/50 rounded-xl">
-                    Delivered — Read Only
-                  </div>
-                )}
-              </CardFooter>
-            </Card>
+            <OrderCard
+              key={order.id}
+              order={order}
+              mode="orders"
+              onUpdateStatus={updateOrderStatus}
+            />
           ))}
         </div>
       )}
@@ -317,7 +246,7 @@ export default function OrdersPage() {
       {isSearchDialogOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-in fade-in duration-200">
           <div className="w-full max-w-[550px] bg-card border border-border rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[85vh]">
-            
+
             {/* Search Header */}
             <div className="p-6 border-b border-border/60 flex items-center justify-between bg-secondary/20 shrink-0">
               <div className="flex items-center gap-2.5">
@@ -351,11 +280,10 @@ export default function OrdersPage() {
                   <button
                     key={status}
                     onClick={() => setSearchStatus(status)}
-                    className={`px-3 py-1 rounded-xl text-xs font-bold transition-all border ${
-                      searchStatus === status
+                    className={`px-3 py-1 rounded-xl text-xs font-bold transition-all border ${searchStatus === status
                         ? 'bg-primary text-primary-foreground border-primary'
                         : 'bg-background text-muted-foreground border-border hover:text-foreground'
-                    }`}
+                      }`}
                   >
                     {status}
                   </button>
@@ -438,7 +366,7 @@ export default function OrdersPage() {
       {isNewOrderModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md p-4 animate-in fade-in duration-200">
           <div className="w-full max-w-[700px] bg-card border border-border rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[92vh]">
-            
+
             {/* Modal Header */}
             <div className="p-6 border-b border-border/60 bg-secondary/20 flex items-center justify-between shrink-0">
               <div>
@@ -462,7 +390,7 @@ export default function OrdersPage() {
 
             {/* Modal Body (Scrollable) */}
             <div className="flex-1 overflow-y-auto p-6 space-y-6 scrollbar-thin">
-              
+
               {/* ITEM SELECTION CONTROLS */}
               <div className="bg-secondary/20 p-5 rounded-2xl border border-border/60 space-y-4">
                 <h4 className="font-black text-sm text-foreground uppercase tracking-wider flex items-center gap-2">

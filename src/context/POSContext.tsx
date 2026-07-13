@@ -54,6 +54,8 @@ interface POSContextType {
   addMenuItem: (item: Omit<MenuItem, 'id'>) => void;
   deleteMenuItem: (id: string) => void;
   updateSettings: (newSettings: Partial<RestaurantSettings>) => void;
+  theme: 'dark' | 'light';
+  toggleTheme: () => void;
 }
 
 const POSContext = createContext<POSContextType | undefined>(undefined);
@@ -86,6 +88,7 @@ export function POSProvider({ children }: { children: React.ReactNode }) {
   const [categories, setCategories] = useState<Category[]>([]);
   const [orders, setOrders] = useState<Order[]>([]);
   const [settings, setSettings] = useState<RestaurantSettings>(defaultSettings);
+  const [theme, setTheme] = useState<'dark' | 'light'>('dark');
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
@@ -93,6 +96,7 @@ export function POSProvider({ children }: { children: React.ReactNode }) {
     const savedCategories = localStorage.getItem('qsw_categories');
     const savedOrders = localStorage.getItem('qsw_orders');
     const savedSettings = localStorage.getItem('qsw_settings');
+    const savedTheme = localStorage.getItem('qsw_theme') as 'dark' | 'light' | null;
 
     if (savedMenu) {
       setMenu(JSON.parse(savedMenu));
@@ -119,6 +123,12 @@ export function POSProvider({ children }: { children: React.ReactNode }) {
       localStorage.setItem('qsw_settings', JSON.stringify(defaultSettings));
     }
 
+    if (savedTheme) {
+      setTheme(savedTheme);
+    } else {
+      localStorage.setItem('qsw_theme', 'dark');
+    }
+
     setIsLoaded(true);
 
     const handleStorageChange = (e: StorageEvent) => {
@@ -134,10 +144,27 @@ export function POSProvider({ children }: { children: React.ReactNode }) {
       if (e.key === 'qsw_settings' && e.newValue) {
         setSettings(JSON.parse(e.newValue));
       }
+      if (e.key === 'qsw_theme' && e.newValue) {
+        setTheme(e.newValue as 'dark' | 'light');
+      }
     };
     window.addEventListener('storage', handleStorageChange);
     return () => window.removeEventListener('storage', handleStorageChange);
   }, []);
+
+  useEffect(() => {
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [theme]);
+
+  const toggleTheme = () => {
+    const newTheme = theme === 'dark' ? 'light' : 'dark';
+    setTheme(newTheme);
+    localStorage.setItem('qsw_theme', newTheme);
+  };
 
   const saveOrders = (newOrders: Order[]) => {
     setOrders(newOrders);
@@ -220,6 +247,8 @@ export function POSProvider({ children }: { children: React.ReactNode }) {
         addMenuItem,
         deleteMenuItem,
         updateSettings,
+        theme,
+        toggleTheme,
       }}
     >
       {children}
