@@ -6,22 +6,22 @@ import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import {
   LayoutDashboard,
-  ShoppingCart,
-  MenuSquare,
+  Store,
   ChefHat,
   MonitorPlay,
   Bike,
   ChevronLeft,
   ChevronRight,
-  Store,
+  Utensils,
+  Layers,
+  Settings,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 
 const navItems = [
   { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-  // { href: '/dashboard/pos', label: 'POS', icon: ShoppingCart },
-  { href: '/dashboard/orders', label: 'Orders', icon: MenuSquare },
+  { href: '/dashboard/orders', label: 'Orders', icon: Store },
   { href: '/dashboard/kitchen', label: 'Kitchen Display', icon: ChefHat },
   { href: '/dashboard/waiting', label: 'Waiting Display', icon: MonitorPlay },
   { href: '/dashboard/delivered', label: 'Delivered Orders', icon: Bike },
