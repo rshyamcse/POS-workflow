@@ -71,7 +71,6 @@ export default function OrdersPage() {
   // Filter Orders for Grid
   const filteredOrders = orders
     .filter(order => {
-      if (activeTab === 'ALL') return true;
       const matchesTab = activeTab === 'ALL' || order.status === activeTab;
       const matchesGlobalSearch = !globalSearchQuery.trim() || 
         order.orderNumber.toLowerCase().includes(globalSearchQuery.toLowerCase()) ||

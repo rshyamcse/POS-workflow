@@ -1,36 +1,46 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🏪 Bloom Cafe & Restaurant Management System
 
-## Getting Started
+A premium, enterprise-grade Point of Sale (POS) and Kitchen Display System (KDS) built specifically for modern cafes and restaurants. Featuring a highly responsive, touch-friendly UI inspired by top-tier SaaS platforms like Toast POS and Square.
 
-First, run the development server:
+![Bloom Cafe Logo](./public/bloom-cafe.png)
+
+**Live Demo**: [https://pos-radheee.vercel.app/](https://pos-radheee.vercel.app/)
+
+## ✨ Features
+
+- **Omnichannel Order Management**: Seamlessly manage Walk-ins and Takeaway orders.
+- **Real-Time Kitchen Display System (KDS)**: Dedicated, distraction-free screen for kitchen staff to manage active prep times and fulfill orders efficiently.
+- **Customer Waiting Display**: A beautifully designed, high-visibility timeline screen (readable from 15+ feet away) to alert customers when their food is Ready.
+- **Intelligent Global Search**: Instantly find any order globally across the application by Order ID or Item Name from the omnipresent navigation bar.
+- **Premium Aesthetics**: Features a meticulously designed UI with smooth micro-animations, glassmorphism, dynamic shadow depths, and fully integrated Dark & Light modes.
+- **Offline-First Resilience**: Powered by React Context and LocalStorage to ensure the business never stops running, even if the internet goes down.
+
+## 💻 Tech Stack
+
+- **Framework**: Next.js 16 (App Router)
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS v4
+- **UI Primitives**: Base UI & shadcn/ui
+- **Icons**: Lucide React
+- **Date Formatting**: date-fns
+
+## 🚀 Getting Started
+
+First, install the dependencies:
+
+```bash
+npm install
+```
+
+Then, run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the application.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 📱 Responsiveness
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The application is fully responsive. It automatically scales its grid layout from 1 to 4 columns depending on the screen width. It transforms into compact views for mobile devices while maintaining its premium look and feel. 
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
