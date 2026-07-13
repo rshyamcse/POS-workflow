@@ -56,6 +56,8 @@ interface POSContextType {
   updateSettings: (newSettings: Partial<RestaurantSettings>) => void;
   theme: 'dark' | 'light';
   toggleTheme: () => void;
+  globalSearchQuery: string;
+  setGlobalSearchQuery: (query: string) => void;
 }
 
 const POSContext = createContext<POSContextType | undefined>(undefined);
@@ -68,14 +70,14 @@ const defaultCategories: Category[] = [
 
 const defaultMenu: MenuItem[] = [
   { id: 'm1', name: 'Chicken Burger', categoryId: '1', price: 10 },
-  { id: 'm2', name: 'Beef Burger', categoryId: '1', price: 12 },
+  { id: 'm2', name: 'classic Burger', categoryId: '1', price: 12 },
   { id: 'm3', name: 'French Fries', categoryId: '2', price: 4 },
   { id: 'm4', name: 'Cold Drink', categoryId: '3', price: 2 },
   { id: 'm5', name: 'Coffee', categoryId: '3', price: 3 },
 ];
 
 const defaultSettings: RestaurantSettings = {
-  name: 'QSW CAFE & RESTAURANT',
+  name: 'Bloom CAFE & RESTAURANT',
   subtitle: 'Modern Takeaway Management',
   address: '123 Enterprise Avenue, Suite 100',
   phone: '+1 (555) 234-5678',
@@ -89,6 +91,7 @@ export function POSProvider({ children }: { children: React.ReactNode }) {
   const [orders, setOrders] = useState<Order[]>([]);
   const [settings, setSettings] = useState<RestaurantSettings>(defaultSettings);
   const [theme, setTheme] = useState<'dark' | 'light'>('dark');
+  const [globalSearchQuery, setGlobalSearchQuery] = useState('');
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
@@ -153,10 +156,12 @@ export function POSProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   useEffect(() => {
-    if (theme === 'light') {
-      document.documentElement.classList.add('light');
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+      document.documentElement.classList.remove('light');
     } else {
       document.documentElement.classList.remove('dark');
+      document.documentElement.classList.add('light');
     }
   }, [theme]);
 
@@ -249,6 +254,8 @@ export function POSProvider({ children }: { children: React.ReactNode }) {
         updateSettings,
         theme,
         toggleTheme,
+        globalSearchQuery,
+        setGlobalSearchQuery,
       }}
     >
       {children}

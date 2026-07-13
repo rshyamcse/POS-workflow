@@ -25,7 +25,7 @@ import { OrderCard } from '@/components/orders/OrderCard';
 import { cn } from '@/lib/utils';
 
 export default function OrdersPage() {
-  const { orders, menu, categories, createOrder, updateOrderStatus } = usePOS();
+  const { orders, menu, categories, createOrder, updateOrderStatus, globalSearchQuery } = usePOS();
 
   // Active Tab Filter
   const [activeTab, setActiveTab] = useState<'ALL' | OrderStatus>('ALL');
@@ -72,7 +72,11 @@ export default function OrdersPage() {
   const filteredOrders = orders
     .filter(order => {
       if (activeTab === 'ALL') return true;
-      return order.status === activeTab;
+      const matchesTab = activeTab === 'ALL' || order.status === activeTab;
+      const matchesGlobalSearch = !globalSearchQuery.trim() || 
+        order.orderNumber.toLowerCase().includes(globalSearchQuery.toLowerCase()) ||
+        order.items.some(i => i.name.toLowerCase().includes(globalSearchQuery.toLowerCase()));
+      return matchesTab && matchesGlobalSearch;
     })
     .sort((a, b) => b.createdAt - a.createdAt);
 

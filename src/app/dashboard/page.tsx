@@ -1,18 +1,22 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { usePOS } from '@/context/POSContext';
 import { ShoppingBag, CheckCircle2 } from 'lucide-react';
 import { OrderCard } from '@/components/orders/OrderCard';
 
 export default function DashboardPage() {
-  const { orders, updateOrderStatus } = usePOS();
+  const { orders, updateOrderStatus, globalSearchQuery } = usePOS();
+  const [isFullscreen, setIsFullscreen] = useState(false);
   
   // Sort: Newest first -> Status grouped
   const statusWeight: Record<string, number> = { 'NEW': 1, 'PREPARING': 2, 'READY': 3, 'DELIVERED': 4 };
   
   const activeOrders = orders
-    .filter(order => order.status !== 'DELIVERED')
+    .filter(o => 
+      o.status !== 'DELIVERED' && 
+      o.orderNumber.toLowerCase().includes(globalSearchQuery.trim().toLowerCase())
+    )
     .sort((a, b) => {
       // First by Status
       const weightA = statusWeight[a.status] || 99;

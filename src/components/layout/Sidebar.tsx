@@ -48,8 +48,8 @@ export function Sidebar({ onItemClick }: { onItemClick?: () => void }) {
       <div className="p-6 border-b border-border/50 flex flex-col shrink-0 relative group">
         <div className="flex items-center gap-4">
           <div className="relative flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-secondary/50 border border-border shadow-inner group-hover:shadow-md transition-shadow">
-            <Store className="h-7 w-7 text-primary" />
-            <div className="absolute bottom-0 right-0 h-3.5 w-3.5 rounded-full bg-green-500 border-2 border-background animate-pulse" />
+            <img src="/bloom-cafe.png" alt="Bloom Cafe" className="h-full w-full object-cover rounded-full" />
+            <div className="absolute bottom-0 right-0 h-3.5 w-3.5 rounded-full bg-green-500 border-2 border-background animate-pulse z-10" />
           </div>
           {!collapsed && (
             <div className="flex flex-col flex-1 overflow-hidden">

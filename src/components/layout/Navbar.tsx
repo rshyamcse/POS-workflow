@@ -26,7 +26,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 export function Navbar() {
-  const { orders } = usePOS();
+  const { orders, globalSearchQuery, setGlobalSearchQuery } = usePOS();
   const [time, setTime] = useState<Date | null>(null);
 
   // Status Counts
@@ -71,7 +71,7 @@ export function Navbar() {
     <header className="sticky top-0 z-20 flex h-20 items-center justify-between border-b border-border/80 bg-background/80 backdrop-blur-2xl px-6 shrink-0 shadow-sm">
 
       {/* Left: Brand / Search */}
-      <div className="flex items-center gap-6 flex-1">
+      <div className="flex items-center gap-4 flex-1">
         {/* Compact Live Badge */}
         <div className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-border bg-secondary/50 shadow-sm shrink-0">
           <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse shadow-[0_0_8px_rgba(34,197,94,0.8)]" />
@@ -79,12 +79,14 @@ export function Navbar() {
           <span className="text-[11px] font-bold text-muted-foreground hidden sm:block">Online</span>
         </div>
 
-        {/* Hover-Expand Search */}
-        <div className="relative group w-10 overflow-hidden hover:w-[220px] transition-all duration-300 ease-in-out bg-secondary/40 border-border/60 rounded-full hidden md:block">
-          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground group-hover:text-foreground transition-colors" />
+        {/* Responsive Expandable Search */}
+        <div className="relative group w-10 overflow-hidden focus-within:w-[150px] sm:focus-within:w-[220px] hover:w-[150px] sm:hover:w-[220px] transition-all duration-300 ease-in-out bg-secondary/40 border border-border/20 focus-within:border-border/60 hover:border-border/60 rounded-full">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground group-focus-within:text-foreground group-hover:text-foreground transition-colors pointer-events-none" />
           <Input
-            placeholder="Search..."
-            className="pl-10 bg-transparent border-0 h-10 w-[220px] focus-visible:ring-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+            placeholder="Search Order ID..."
+            value={globalSearchQuery}
+            onChange={(e) => setGlobalSearchQuery(e.target.value)}
+            className="pl-9 bg-transparent border-0 h-10 w-[150px] sm:w-[220px] focus-visible:ring-0 opacity-0 focus-within:opacity-100 group-hover:opacity-100 transition-opacity duration-300 cursor-pointer focus:cursor-text"
           />
         </div>
       </div>

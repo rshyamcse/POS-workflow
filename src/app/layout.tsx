@@ -14,8 +14,12 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Restaurant POS Management System",
-  description: "Enterprise-grade POS & KDS for Delivery and Takeaway",
+  title: "Bloom Cafe & Restaurant Management System",
+  description: "Bloom Cafe & Restaurant Management System",
+  icons: {
+    icon: "/bloom-cafe.png",
+    apple: "/bloom-cafe.png",
+  },
 };
 
 export default function RootLayout({
