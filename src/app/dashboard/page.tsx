@@ -2,34 +2,47 @@
 
 import React from 'react';
 import { usePOS } from '@/context/POSContext';
-import { ShoppingBag } from 'lucide-react';
+import { ShoppingBag, CheckCircle2 } from 'lucide-react';
 import { OrderCard } from '@/components/orders/OrderCard';
 
 export default function DashboardPage() {
   const { orders, updateOrderStatus } = usePOS();
   
-  // Only active orders (NEW, PREPARING, READY), newest first
+  // Sort: Newest first -> Status grouped
+  const statusWeight: Record<string, number> = { 'NEW': 1, 'PREPARING': 2, 'READY': 3, 'DELIVERED': 4 };
+  
   const activeOrders = orders
     .filter(order => order.status !== 'DELIVERED')
-    .sort((a, b) => b.createdAt - a.createdAt);
+    .sort((a, b) => {
+      // First by Status
+      const weightA = statusWeight[a.status] || 99;
+      const weightB = statusWeight[b.status] || 99;
+      if (weightA !== weightB) return weightA - weightB;
+      // Then by Newest First
+      return b.createdAt - a.createdAt;
+    });
 
   return (
-    <div className="space-y-6 pb-12">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-6 border-b border-border/50 shrink-0">
-        <h1 className="text-3xl font-black tracking-tight text-foreground">Active Dashboard</h1>
-        <p className="text-muted-foreground mt-1 font-medium">Real-time overview of current takeaway orders.</p>
+    <div className="space-y-6 pb-12 max-w-[1600px] mx-auto w-full px-2">
+      {/* Premium Page Header */}
+      <div className="flex items-center justify-between pb-4 border-b border-border/60 shrink-0 gap-4">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+          <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-foreground">Active Dashboard</h1>
+          <span className="hidden sm:block text-border/60">|</span>
+          <p className="text-sm font-bold text-muted-foreground">Real-time overview</p>
+        </div>
       </div>
 
       {activeOrders.length === 0 ? (
-        <div className="flex flex-col items-center justify-center min-h-[50vh] text-center border-2 border-dashed border-border/60 rounded-3xl bg-secondary/10 p-8">
-          <ShoppingBag className="h-16 w-16 text-muted-foreground mb-4 opacity-20" />
-          <h3 className="text-2xl font-bold text-foreground">No Active Orders</h3>
-          <p className="text-muted-foreground mt-2 max-w-sm text-base">
-            There are currently no active orders. Head to the Reception Orders to create a new order.
-          </p>
+        <div className="flex flex-col items-center justify-center h-[50vh] text-center bg-card rounded-[24px] border border-border border-dashed shadow-sm">
+          <div className="h-16 w-16 bg-secondary/50 rounded-full flex items-center justify-center mb-4">
+            <CheckCircle2 className="h-8 w-8 text-muted-foreground/50" />
+          </div>
+          <h2 className="text-2xl font-black text-foreground tracking-tight">No Active Orders</h2>
+          <p className="text-muted-foreground mt-2 font-medium">All caught up! Waiting for new orders to arrive.</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-[24px]">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-[24px] pt-2 place-items-start justify-items-center sm:justify-items-start w-full">
           {activeOrders.map(order => (
             <OrderCard
               key={order.id}
