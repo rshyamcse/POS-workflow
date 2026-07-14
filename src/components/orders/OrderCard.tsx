@@ -152,7 +152,7 @@ export function OrderCard({ order, mode, onUpdateStatus, className = '' }: Order
     .map(item => `${item.name}: ${item.notes}`);
 
   // ==========================================
-  // MODE 1: WAITING DISPLAY TV (Horizontal 1 Line = 1 Container, No Middle Text)
+  // MODE 1: WAITING DISPLAY TV (Horizontal 1 Line = 1 Container, Center Status Text, Compact Waiting + CreatedAt Below)
   // ==========================================
   if (mode === 'waiting') {
     const isReady = order.status === 'READY';
@@ -161,35 +161,36 @@ export function OrderCard({ order, mode, onUpdateStatus, className = '' }: Order
     return (
       <div
         className={cn(
-          "h-full w-full min-h-0 min-w-0 rounded-[18px] border-[1px] bg-card text-card-foreground shadow-md transition-all duration-150 p-4 sm:p-8 flex flex-row items-center justify-between gap-4 sm:gap-8 overflow-hidden relative",
+          "h-full w-full min-h-0 min-w-0 rounded-[18px] border-[1px] bg-card text-card-foreground shadow-md transition-all duration-150 p-4 sm:p-6 flex flex-row items-center justify-between gap-4 sm:gap-6 overflow-hidden relative",
           colors.cardBorder,
           colors.leftBorder,
           className
         )}
       >
-        {/* Left Section: Order Number & Status Badge */}
-        <div className="flex items-center gap-3 sm:gap-6 shrink-0 truncate">
-          <span className="text-[32px] sm:text-[56px] lg:text-[72px] xl:text-[84px] font-black tracking-tight text-foreground leading-none shrink-0">
+        {/* Left Section: Order Number ONLY (Status badge removed as requested) */}
+        <div className="flex items-center shrink-0">
+          <span className="text-[40px] sm:text-[60px] lg:text-[72px] font-black tracking-tight text-foreground leading-none shrink-0">
             {order.orderNumber}
           </span>
-          <div className={cn(
-            "rounded-[16px] font-black uppercase tracking-wider px-4 sm:px-8 py-2 sm:py-3 text-[16px] sm:text-[24px] lg:text-[30px] shrink-0 shadow-sm",
-            colors.badgeBg
-          )}>
-            {order.status}
-          </div>
         </div>
 
-        {/* Flexible Spacer (Middle status text removed) */}
-        <div className="flex-1 min-w-[12px]" />
-
-        {/* Right Section: Small CreatedAt Text & Large Waiting Time */}
-        <div className="flex items-center gap-3 sm:gap-6 shrink-0 ml-auto">
-          <span className="text-xs sm:text-sm lg:text-base font-semibold text-muted-foreground/80 uppercase tracking-wider shrink-0 whitespace-nowrap">
-            Created: {format(order.createdAt, 'hh:mm a')}
+        {/* Center Section: Status Centered as Bold Text Format (Half Size) */}
+        <div className="flex-1 flex items-center justify-center min-w-0 px-4 truncate text-center">
+          <span className={cn(
+            "text-[14px] sm:text-[20px] lg:text-[26px] font-black tracking-wider uppercase leading-none truncate px-2",
+            isReady ? "text-green-500 animate-pulse" : "text-orange-500"
+          )}>
+            {isReady ? "READY FOR PICKUP" : "PREPARING ORDER"}
           </span>
-          <span className="bg-secondary/90 text-foreground px-5 sm:px-8 py-2.5 sm:py-4 rounded-[18px] border border-border/70 font-black text-[20px] sm:text-[32px] lg:text-[40px] tracking-wide shadow-sm shrink-0 whitespace-nowrap">
+        </div>
+
+        {/* Right Section: Compact Waiting Time with CreatedAt Right Below It */}
+        <div className="flex flex-col items-end justify-center gap-1 shrink-0 ml-auto">
+          <span className="bg-secondary/90 text-foreground px-4 sm:px-6 py-1.5 sm:py-2.5 rounded-[14px] border border-border/70 font-black text-[18px] sm:text-[24px] lg:text-[28px] tracking-wide shadow-sm shrink-0 whitespace-nowrap">
             Waiting : <span className={cn(isReady ? "text-green-500" : "text-orange-500")}>{waitingTimeStr}</span>
+          </span>
+          <span className="text-xs sm:text-[13px] font-bold text-muted-foreground/80 uppercase tracking-wider shrink-0 whitespace-nowrap">
+            Created: {format(order.createdAt, 'hh:mm a')}
           </span>
         </div>
       </div>
@@ -211,17 +212,11 @@ export function OrderCard({ order, mode, onUpdateStatus, className = '' }: Order
           className
         )}
       >
-        {/* Left Section: Order Number & Status Badge */}
-        <div className="flex items-center gap-3 sm:gap-5 shrink-0 truncate">
-          <span className="text-[32px] sm:text-[48px] lg:text-[56px] font-black tracking-tight text-foreground leading-none shrink-0">
+        {/* Left Section: Order Number ONLY (Status badge removed as requested) */}
+        <div className="flex items-center shrink-0">
+          <span className="text-[40px] sm:text-[60px] lg:text-[72px] font-black tracking-tight text-foreground leading-none shrink-0">
             {order.orderNumber}
           </span>
-          <div className={cn(
-            "rounded-[14px] font-black uppercase tracking-wider px-3.5 sm:px-6 py-1.5 sm:py-2 text-[15px] sm:text-[20px] shrink-0 shadow-sm",
-            colors.badgeBg
-          )}>
-            {order.status}
-          </div>
         </div>
 
         {/* Middle Section: Centered Items & Quantities */}
