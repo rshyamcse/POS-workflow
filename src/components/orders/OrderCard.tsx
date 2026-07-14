@@ -152,7 +152,7 @@ export function OrderCard({ order, mode, onUpdateStatus, className = '' }: Order
     .map(item => `${item.name}: ${item.notes}`);
 
   // ==========================================
-  // MODE 1: WAITING DISPLAY TV (Strict TV Specs)
+  // MODE 1: WAITING DISPLAY TV (Horizontal 1 Line = 1 Container, No Middle Text)
   // ==========================================
   if (mode === 'waiting') {
     const isReady = order.status === 'READY';
@@ -161,53 +161,43 @@ export function OrderCard({ order, mode, onUpdateStatus, className = '' }: Order
     return (
       <div
         className={cn(
-          "h-full w-full min-h-0 min-w-0 rounded-[18px] border-[1px] bg-card text-card-foreground shadow-md transition-all duration-150 p-4 sm:p-6 flex flex-col justify-between overflow-hidden relative",
+          "h-full w-full min-h-0 min-w-0 rounded-[18px] border-[1px] bg-card text-card-foreground shadow-md transition-all duration-150 p-4 sm:p-8 flex flex-row items-center justify-between gap-4 sm:gap-8 overflow-hidden relative",
           colors.cardBorder,
           colors.leftBorder,
           className
         )}
       >
-        {/* Top Row: Order Number */}
-        <div className="flex items-center justify-between gap-4 pb-2 sm:pb-3 border-b border-border/40 shrink-0">
-          <span className="text-[32px] sm:text-[48px] lg:text-[56px] font-black leading-none tracking-tight text-foreground truncate">
+        {/* Left Section: Order Number & Status Badge */}
+        <div className="flex items-center gap-3 sm:gap-6 shrink-0 truncate">
+          <span className="text-[32px] sm:text-[56px] lg:text-[72px] xl:text-[84px] font-black tracking-tight text-foreground leading-none shrink-0">
             {order.orderNumber}
           </span>
           <div className={cn(
-            "rounded-[14px] font-black uppercase tracking-wider px-5 sm:px-6 py-2 text-[16px] sm:text-[20px] lg:text-[24px] shrink-0 shadow-sm",
+            "rounded-[16px] font-black uppercase tracking-wider px-4 sm:px-8 py-2 sm:py-3 text-[16px] sm:text-[24px] lg:text-[30px] shrink-0 shadow-sm",
             colors.badgeBg
           )}>
             {order.status}
           </div>
         </div>
 
-        {/* Middle Section: Big Status Text */}
-        <div className="flex-1 flex items-center justify-center min-h-0 py-2 overflow-hidden text-center">
-          <span className={cn(
-            "text-[24px] sm:text-[40px] lg:text-[48px] font-black tracking-wide uppercase leading-tight truncate px-2",
-            isReady ? "text-green-500 animate-pulse" : "text-orange-500"
-          )}>
-            {isReady ? "READY FOR PICKUP" : "PREPARING ORDER"}
-          </span>
-        </div>
+        {/* Flexible Spacer (Middle status text removed) */}
+        <div className="flex-1 min-w-[12px]" />
 
-        {/* Bottom Row: Waiting Time & Created Time */}
-        <div className="flex flex-wrap items-center justify-between gap-3 pt-2 sm:pt-3 border-t border-border/40 shrink-0 text-[14px] sm:text-[16px] lg:text-[18px] font-bold text-muted-foreground mt-auto">
-          <div className="flex items-center gap-2">
-            <span className="text-foreground font-extrabold">Waiting :</span>
-            <span className={cn("font-black", isReady ? "text-green-500" : "text-orange-500")}>
-              {waitingTimeStr}
-            </span>
-          </div>
-          <div className="flex items-center gap-2 ml-auto">
-            <span>Created : {format(order.createdAt, 'hh:mm a')}</span>
-          </div>
+        {/* Right Section: Small CreatedAt Text & Large Waiting Time */}
+        <div className="flex items-center gap-3 sm:gap-6 shrink-0 ml-auto">
+          <span className="text-xs sm:text-sm lg:text-base font-semibold text-muted-foreground/80 uppercase tracking-wider shrink-0 whitespace-nowrap">
+            Created: {format(order.createdAt, 'hh:mm a')}
+          </span>
+          <span className="bg-secondary/90 text-foreground px-5 sm:px-8 py-2.5 sm:py-4 rounded-[18px] border border-border/70 font-black text-[20px] sm:text-[32px] lg:text-[40px] tracking-wide shadow-sm shrink-0 whitespace-nowrap">
+            Waiting : <span className={cn(isReady ? "text-green-500" : "text-orange-500")}>{waitingTimeStr}</span>
+          </span>
         </div>
       </div>
     );
   }
 
   // ==========================================
-  // MODE 2: KITCHEN DISPLAY TV (Exact Kitchen Specs)
+  // MODE 2: KITCHEN DISPLAY TV (Horizontal 1 Line = 1 Order, Center Items, Compact Timer + CreatedAt Below)
   // ==========================================
   if (mode === 'kitchen') {
     const timerStr = elapsed || '00:00';
@@ -215,70 +205,61 @@ export function OrderCard({ order, mode, onUpdateStatus, className = '' }: Order
     return (
       <div
         className={cn(
-          "h-full w-full min-h-0 min-w-0 rounded-[18px] border-[1px] bg-card text-card-foreground shadow-md transition-all duration-150 p-4 sm:p-5 lg:p-6 flex flex-col justify-between overflow-hidden relative",
+          "h-full w-full min-h-0 min-w-0 rounded-[18px] border-[1px] bg-card text-card-foreground shadow-md transition-all duration-150 p-4 sm:p-6 flex flex-row items-center justify-between gap-4 sm:gap-6 overflow-hidden relative",
           colors.cardBorder,
           colors.leftBorder,
           className
         )}
       >
-        {/* Top Bar: Order Number, Status, Created Time */}
-        <div className="flex flex-wrap items-center justify-between gap-3 pb-2.5 sm:pb-3.5 border-b border-border/50 shrink-0">
-          <div className="flex items-center gap-3 shrink-0 truncate">
-            <span className="text-[28px] sm:text-[36px] lg:text-[44px] font-black tracking-tight text-foreground leading-none truncate">
-              {order.orderNumber}
-            </span>
-            <div className={cn(
-              "rounded-[12px] font-black uppercase tracking-wider px-3.5 py-1 text-[14px] sm:text-[18px] shrink-0",
-              colors.badgeBg
-            )}>
-              {order.status}
-            </div>
-          </div>
-          <div className="flex items-center gap-2 text-muted-foreground font-bold text-[14px] sm:text-[18px] shrink-0 ml-auto">
-            <Clock className="w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground shrink-0" />
-            <span>{format(order.createdAt, 'hh:mm a')}</span>
+        {/* Left Section: Order Number & Status Badge */}
+        <div className="flex items-center gap-3 sm:gap-5 shrink-0 truncate">
+          <span className="text-[32px] sm:text-[48px] lg:text-[56px] font-black tracking-tight text-foreground leading-none shrink-0">
+            {order.orderNumber}
+          </span>
+          <div className={cn(
+            "rounded-[14px] font-black uppercase tracking-wider px-3.5 sm:px-6 py-1.5 sm:py-2 text-[15px] sm:text-[20px] shrink-0 shadow-sm",
+            colors.badgeBg
+          )}>
+            {order.status}
           </div>
         </div>
 
-        {/* Middle Content: Items & Notes */}
-        <div className="py-2.5 sm:py-3.5 space-y-2.5 sm:space-y-3 flex-1 flex flex-col justify-center min-h-0 overflow-y-auto scrollbar-thin">
-          <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-            {order.items.map((item, idx) => (
-              <div
-                key={item.id || idx}
-                className="inline-flex items-center gap-2 sm:gap-2.5 bg-secondary/80 border border-border/70 rounded-[14px] px-3.5 sm:px-4 py-1.5 sm:py-2 shrink-0"
-              >
-                <span className="font-black text-foreground tracking-tight text-[18px] sm:text-[22px] lg:text-[24px]">
-                  {item.name}
+        {/* Middle Section: Centered Items & Quantities */}
+        <div className="flex-1 flex flex-wrap items-center justify-center gap-x-4 sm:gap-x-6 gap-y-1.5 px-4 sm:px-8 min-w-0 overflow-hidden max-h-full py-1 text-center">
+          {order.items.map((item, idx) => (
+            <div
+              key={item.id || idx}
+              className="inline-flex items-center gap-1.5 sm:gap-2 shrink-0"
+            >
+              <span className="font-black text-foreground tracking-tight text-[22px] sm:text-[30px] lg:text-[36px] whitespace-nowrap leading-none">
+                {item.name}
+              </span>
+              <span className="font-black text-orange-500 tracking-tight text-[22px] sm:text-[30px] lg:text-[36px] shrink-0 whitespace-nowrap leading-none">
+                ×{item.quantity}
+              </span>
+              {idx < order.items.length - 1 && (
+                <span className="text-muted-foreground/40 font-black text-[22px] sm:text-[30px] lg:text-[36px] mx-1 sm:mx-2.5 select-none leading-none">
+                  •
                 </span>
-                <span className="font-black bg-foreground text-background px-2 sm:px-2.5 py-0.5 rounded-[10px] text-[14px] sm:text-[16px] lg:text-[18px] shrink-0 shadow-sm">
-                  ×{item.quantity}
-                </span>
-              </div>
-            ))}
-          </div>
+              )}
+            </div>
+          ))}
 
           {hasNotes && (
-            <div className={cn(
-              "text-[14px] sm:text-[16px] lg:text-[18px] font-bold px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl border-l-4 w-full break-words shrink-0",
-              colors.noteBg
-            )}>
-              <span className="font-black uppercase tracking-wider mr-2">Notes :</span>
-              <span>{allNotes.join(' • ')}</span>
+            <div className="inline-flex items-center gap-1.5 bg-orange-500/15 border border-orange-500/30 text-orange-500 text-[16px] sm:text-[20px] font-extrabold px-3.5 py-1 rounded-xl whitespace-nowrap ml-2 shadow-sm">
+              <span>Notes: {allNotes.join(' • ')}</span>
             </div>
           )}
         </div>
 
-        {/* Bottom Bar: Timer & Ready Button */}
-        <div className="flex flex-wrap items-center justify-between gap-3 pt-2.5 sm:pt-3.5 border-t border-border/50 shrink-0 mt-auto text-[14px] sm:text-[16px] lg:text-[18px]">
-          <div className="flex items-center gap-2 sm:gap-3 font-bold text-muted-foreground shrink-0">
-            <span className="bg-secondary/90 text-foreground px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-[12px] border border-border/70 font-black text-[16px] sm:text-[20px] lg:text-[22px]">
-              Timer : {timerStr}
-            </span>
-          </div>
-          <div className="shrink-0 ml-auto">
-            {renderActions()}
-          </div>
+        {/* Right Section: Compact Timer with CreatedAt Right Below It */}
+        <div className="flex flex-col items-end justify-center gap-1 shrink-0 ml-auto">
+          <span className="bg-secondary/90 text-foreground px-4 sm:px-5 py-1.5 sm:py-2 rounded-[12px] border border-border/70 font-black text-[18px] sm:text-[22px] lg:text-[24px] tracking-wide shadow-sm shrink-0 whitespace-nowrap">
+            Timer : {timerStr}
+          </span>
+          <span className="text-xs sm:text-[13px] font-bold text-muted-foreground/80 uppercase tracking-wider shrink-0 whitespace-nowrap">
+            Created: {format(order.createdAt, 'hh:mm a')}
+          </span>
         </div>
       </div>
     );

@@ -19,15 +19,15 @@ export default function WaitingDisplayPage() {
 
   const getGridClass = (count: number) => {
     if (count <= 1) return 'grid-cols-1 grid-rows-1';
-    if (count === 2) return 'grid-cols-1 grid-rows-2 lg:grid-cols-2 lg:grid-rows-1';
-    if (count === 3) return 'grid-cols-1 grid-rows-3 lg:grid-cols-3 lg:grid-rows-1';
-    if (count === 4) return 'grid-cols-2 grid-rows-2';
-    if (count <= 6) return 'grid-cols-2 grid-rows-3 lg:grid-cols-3 lg:grid-rows-2';
-    if (count <= 8) return 'grid-cols-2 grid-rows-4 lg:grid-cols-4 lg:grid-rows-2';
-    if (count <= 9) return 'grid-cols-3 grid-rows-3';
-    if (count <= 12) return 'grid-cols-3 grid-rows-4 lg:grid-cols-4 lg:grid-rows-3';
-    if (count <= 16) return 'grid-cols-4 grid-rows-4';
-    return 'grid-cols-5 grid-rows-4';
+    if (count === 2) return 'grid-cols-1 grid-rows-2';
+    if (count === 3) return 'grid-cols-1 grid-rows-3';
+    if (count === 4) return 'grid-cols-1 grid-rows-4';
+    if (count === 5) return 'grid-cols-1 grid-rows-5';
+    if (count === 6) return 'grid-cols-1 grid-rows-6';
+    if (count <= 8) return 'grid-cols-2 grid-rows-4';
+    if (count <= 10) return 'grid-cols-2 grid-rows-5';
+    if (count <= 12) return 'grid-cols-2 grid-rows-6';
+    return 'grid-cols-3 grid-rows-5';
   };
 
   return (
