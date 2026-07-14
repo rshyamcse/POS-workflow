@@ -35,7 +35,7 @@ export default function DashboardPage() {
           </h1>
           <span className="hidden sm:block text-border/60">|</span>
           <p className="text-sm sm:text-base text-muted-foreground font-bold tracking-wide">
-            Real-time overview
+            Real-time horizontal order cards overview
           </p>
         </div>
       </div>
@@ -49,7 +49,7 @@ export default function DashboardPage() {
           <p className="text-muted-foreground mt-2 font-medium">All caught up! Waiting for new orders to arrive.</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-[24px] pt-2 place-items-start justify-items-center sm:justify-items-start w-full">
+        <div className="grid grid-cols-1 2xl:grid-cols-2 gap-[24px] pt-2 place-items-start justify-items-start w-full">
           {activeOrders.map(order => (
             <OrderCard
               key={order.id}
@@ -63,3 +63,4 @@ export default function DashboardPage() {
     </div>
   );
 }
+

@@ -264,7 +264,7 @@ export default function OrdersPage() {
           </p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-[24px] pt-2 place-items-start justify-items-center sm:justify-items-start w-full">
+        <div className="grid grid-cols-1 2xl:grid-cols-2 gap-[24px] pt-2 place-items-start justify-items-start w-full">
           {filteredOrders.map(order => (
             <OrderCard
               key={order.id}
