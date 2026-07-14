@@ -37,8 +37,10 @@ export default function OrdersPage() {
 
   // Menu Search inside New Order
   const [menuSearchQuery, setMenuSearchQuery] = useState('');
-  
+
   // Form Fields inside New Order Modal
+  const [entryMode, setEntryMode] = useState<'menu' | 'manual'>('menu');
+  const [manualItemName, setManualItemName] = useState<string>('');
   const [selectedCategoryId, setSelectedCategoryId] = useState<string>('');
   const [selectedMenuItemId, setSelectedMenuItemId] = useState<string>('');
   const [quantity, setQuantity] = useState<number>(1);
@@ -72,7 +74,7 @@ export default function OrdersPage() {
   const filteredOrders = orders
     .filter(order => {
       const matchesTab = activeTab === 'ALL' || order.status === activeTab;
-      const matchesGlobalSearch = !globalSearchQuery.trim() || 
+      const matchesGlobalSearch = !globalSearchQuery.trim() ||
         order.orderNumber.toLowerCase().includes(globalSearchQuery.toLowerCase()) ||
         order.items.some(i => i.name.toLowerCase().includes(globalSearchQuery.toLowerCase()));
       return matchesTab && matchesGlobalSearch;
@@ -101,6 +103,8 @@ export default function OrdersPage() {
     const randomNum = Math.floor(100000 + Math.random() * 900000);
     setPreviewOrderNumber(`#${randomNum}`);
     setCurrentOrderItems([]);
+    setEntryMode('menu');
+    setManualItemName('');
     setSelectedCategoryId('');
     setSelectedMenuItemId('');
     setMenuSearchQuery('');
@@ -117,20 +121,34 @@ export default function OrdersPage() {
   });
 
   const handleAddItem = () => {
-    const selectedMenuObj = menu.find(m => m.id === selectedMenuItemId);
-    if (!selectedMenuObj) return;
+    if (entryMode === 'menu') {
+      const selectedMenuObj = menu.find(m => m.id === selectedMenuItemId);
+      if (!selectedMenuObj) return;
 
-    setCurrentOrderItems([
-      ...currentOrderItems,
-      {
-        menuItemId: selectedMenuObj.id,
-        name: selectedMenuObj.name,
-        quantity,
-        notes: notes.trim(),
-      }
-    ]);
+      setCurrentOrderItems([
+        ...currentOrderItems,
+        {
+          menuItemId: selectedMenuObj.id,
+          name: selectedMenuObj.name,
+          quantity,
+          notes: notes.trim(),
+        }
+      ]);
+      setSelectedMenuItemId('');
+    } else {
+      if (!manualItemName.trim()) return;
+      setCurrentOrderItems([
+        ...currentOrderItems,
+        {
+          menuItemId: `manual-${Date.now()}`,
+          name: manualItemName.trim(),
+          quantity,
+          notes: notes.trim(),
+        }
+      ]);
+      setManualItemName('');
+    }
 
-    setSelectedMenuItemId('');
     setQuantity(1);
     setNotes('');
   };
@@ -205,7 +223,7 @@ export default function OrdersPage() {
           const isActive = activeTab === tab;
           const count = counts[tab];
           const label = tab === 'ALL' ? 'All' : tab === 'NEW' ? 'New' : tab === 'PREPARING' ? 'Preparing' : tab === 'READY' ? 'Ready' : 'Delivered';
-          
+
           let colorTheme = '';
           if (isActive) {
             if (tab === 'ALL') colorTheme = 'bg-primary text-primary-foreground border-primary shadow-primary/20';
@@ -228,7 +246,7 @@ export default function OrdersPage() {
             >
               <span>{label}</span>
               <span className={cn(
-                "px-2.5 py-0.5 rounded-[8px] text-[11px] font-black leading-none flex items-center justify-center", 
+                "px-2.5 py-0.5 rounded-[8px] text-[11px] font-black leading-none flex items-center justify-center",
                 isActive ? "bg-background/20 text-current" : "bg-background text-foreground border border-border/50"
               )}>
                 {count}
@@ -290,77 +308,96 @@ export default function OrdersPage() {
 
             {/* Split Pane Body */}
             <div className="flex-1 overflow-hidden flex flex-col md:flex-row">
-              
+
               {/* LEFT PANE: Menu & Search */}
               <div className="w-full md:w-[60%] border-r border-border/60 flex flex-col bg-card shrink-0">
-                <div className="p-5 space-y-5 flex-1 overflow-y-auto scrollbar-thin">
-                  
-                  <div className="relative">
-                    <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                    <Input
-                      placeholder="Search menu items instantly..."
-                      value={menuSearchQuery}
-                      onChange={(e) => {
-                        setMenuSearchQuery(e.target.value);
-                        setSelectedMenuItemId('');
-                      }}
-                      className="pl-10 bg-secondary/30 border-border/80 h-12 rounded-xl text-foreground font-bold shadow-sm"
-                    />
-                  </div>
+                <div className="p-5 flex border-b border-border/50 gap-2 shrink-0">
+                </div>
 
-                  <div className="space-y-2">
-                    <label className="text-xs font-black text-muted-foreground uppercase tracking-widest">Category Chips</label>
-                    <div className="flex flex-wrap gap-2">
-                      <button
-                        onClick={() => {
-                          setSelectedCategoryId('');
-                          setSelectedMenuItemId('');
-                        }}
-                        className={cn(
-                          "px-4 py-2 rounded-xl text-[13px] font-bold transition-all border",
-                          selectedCategoryId === '' ? "bg-foreground text-background shadow-md border-foreground" : "bg-secondary text-muted-foreground border-border hover:bg-secondary/80"
-                        )}
-                      >
-                        All
-                      </button>
-                      {categories.map(cat => (
-                        <button
-                          key={cat.id}
-                          onClick={() => {
-                            setSelectedCategoryId(cat.id);
+                <div className="p-5 space-y-5 flex-1 overflow-y-auto scrollbar-thin">
+                  {entryMode === 'menu' ? (
+                    <>
+                      <div className="relative">
+                        <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                        <Input
+                          placeholder="Search menu items instantly..."
+                          value={menuSearchQuery}
+                          onChange={(e) => {
+                            setMenuSearchQuery(e.target.value);
                             setSelectedMenuItemId('');
                           }}
-                          className={cn(
-                            "px-4 py-2 rounded-xl text-[13px] font-bold transition-all border",
-                            selectedCategoryId === cat.id ? "bg-foreground text-background shadow-md border-foreground" : "bg-secondary text-muted-foreground border-border hover:bg-secondary/80"
-                          )}
-                        >
-                          {cat.name}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
+                          className="pl-10 bg-secondary/30 border-border/80 h-12 rounded-xl text-foreground font-bold shadow-sm"
+                        />
+                      </div>
 
-                  <div className="space-y-2">
-                    <label className="text-xs font-black text-muted-foreground uppercase tracking-widest">Menu Selection</label>
-                    <select
-                      size={6}
-                      className="flex w-full rounded-[14px] border border-border/80 bg-secondary/10 px-3 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary font-bold text-foreground overflow-y-auto scrollbar-thin"
-                      value={selectedMenuItemId}
-                      onChange={(e) => setSelectedMenuItemId(e.target.value)}
-                    >
-                      {filteredMenuItems.length === 0 && (
-                        <option disabled>No items found.</option>
-                      )}
-                      {filteredMenuItems.map(item => (
-                        <option key={item.id} value={item.id} className="py-2.5 px-3 rounded-lg hover:bg-primary hover:text-primary-foreground mb-1">
-                          {item.name}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  
-                  {selectedMenuItemId && (
+                      <div className="space-y-2">
+                        <label className="text-xs font-black text-muted-foreground uppercase tracking-widest">Category Chips</label>
+                        <div className="flex flex-wrap gap-2">
+                          <button
+                            onClick={() => {
+                              setSelectedCategoryId('');
+                              setSelectedMenuItemId('');
+                            }}
+                            className={cn(
+                              "px-4 py-2 rounded-xl text-[13px] font-bold transition-all border",
+                              selectedCategoryId === '' ? "bg-foreground text-background shadow-md border-foreground" : "bg-secondary text-muted-foreground border-border hover:bg-secondary/80"
+                            )}
+                          >
+                            All
+                          </button>
+                          {categories.map(cat => (
+                            <button
+                              key={cat.id}
+                              onClick={() => {
+                                setSelectedCategoryId(cat.id);
+                                setSelectedMenuItemId('');
+                              }}
+                              className={cn(
+                                "px-4 py-2 rounded-xl text-[13px] font-bold transition-all border",
+                                selectedCategoryId === cat.id ? "bg-foreground text-background shadow-md border-foreground" : "bg-secondary text-muted-foreground border-border hover:bg-secondary/80"
+                              )}
+                            >
+                              {cat.name}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div className="space-y-2">
+                        <label className="text-xs font-black text-muted-foreground uppercase tracking-widest">Menu Selection</label>
+                        <select
+                          size={6}
+                          className="flex w-full rounded-[14px] border border-border/80 bg-secondary/10 px-3 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary font-bold text-foreground overflow-y-auto scrollbar-thin"
+                          value={selectedMenuItemId}
+                          onChange={(e) => setSelectedMenuItemId(e.target.value)}
+                        >
+                          {filteredMenuItems.length === 0 && (
+                            <option disabled>No items found.</option>
+                          )}
+                          {filteredMenuItems.map(item => (
+                            <option key={item.id} value={item.id} className="py-2.5 px-3 rounded-lg hover:bg-primary hover:text-primary-foreground mb-1">
+                              {item.name}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    </>
+                  ) : (
+                    <div className="space-y-4 animate-in fade-in slide-in-from-bottom-2 duration-300">
+                      <div className="space-y-2">
+                        <label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">Item Name (Custom)</label>
+                        <Input
+                          placeholder="Type custom item name..."
+                          value={manualItemName}
+                          onChange={(e) => setManualItemName(e.target.value)}
+                          className="bg-secondary/30 border-border/80 h-12 rounded-xl text-foreground font-bold shadow-sm"
+                          autoFocus
+                        />
+                      </div>
+                    </div>
+                  )}
+
+                  {(entryMode === 'manual' || selectedMenuItemId) && (
                     <div className="animate-in fade-in slide-in-from-bottom-4 duration-300 space-y-4 pt-2 border-t border-border/50">
                       <div className="grid grid-cols-[120px_1fr] gap-4">
                         <div className="space-y-2">
@@ -379,18 +416,20 @@ export default function OrdersPage() {
                         </div>
                         <div className="space-y-2">
                           <label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">Notes</label>
-                          <Input
+                          <textarea
                             placeholder="Optional notes (e.g. Extra Crispy)"
                             value={notes}
                             onChange={(e) => setNotes(e.target.value)}
-                            className="bg-card border-border/80 h-10 rounded-[10px] font-semibold placeholder:text-muted-foreground/60"
+                            className="w-full bg-card border border-border/80 min-h-[40px] p-2 rounded-[10px] text-sm font-semibold placeholder:text-muted-foreground/60 resize-none"
+                            rows={entryMode === 'manual' ? 2 : 1}
                           />
                         </div>
                       </div>
                       <Button
                         type="button"
+                        disabled={entryMode === 'manual' && !manualItemName.trim()}
                         onClick={handleAddItem}
-                        className="w-full rounded-[14px] h-12 bg-primary text-primary-foreground font-black hover:bg-primary/90 text-[15px] shadow-lg shadow-primary/20"
+                        className="w-full rounded-[14px] h-12 bg-primary text-primary-foreground font-black hover:bg-primary/90 text-[15px] shadow-lg shadow-primary/20 disabled:opacity-50"
                       >
                         <Plus className="h-5 w-5 mr-2" /> Add Item
                       </Button>
@@ -407,7 +446,7 @@ export default function OrdersPage() {
                   </h4>
                   <span className="bg-primary/10 text-primary px-3 py-1 text-[11px] font-black rounded-full border border-primary/20">{totalItems} Items</span>
                 </div>
-                
+
                 <div className="flex-1 overflow-y-auto p-5 scrollbar-thin">
                   {currentOrderItems.length === 0 ? (
                     <div className="h-full flex flex-col items-center justify-center text-center opacity-50 space-y-3">
@@ -445,7 +484,7 @@ export default function OrdersPage() {
                     </ul>
                   )}
                 </div>
-                
+
                 {/* Sticky Footer */}
                 <div className="p-5 border-t border-border/60 bg-secondary/10 shrink-0">
                   <Button
@@ -462,7 +501,7 @@ export default function OrdersPage() {
           </div>
         </div>
       )}
-      
+
       {/* Search Modal remains untouched or simple update below */}
     </div>
   );

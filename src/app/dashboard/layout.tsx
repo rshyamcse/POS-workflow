@@ -11,8 +11,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
   if (isFullscreen) {
     return (
-      <div className="flex h-screen w-screen overflow-hidden bg-background text-foreground">
-        <main className="flex-1 overflow-y-auto bg-background p-6 md:p-8 scrollbar-thin">
+      <div className="h-screen w-screen overflow-hidden bg-background text-foreground m-0 p-0">
+        <main className="h-full w-full overflow-hidden bg-background">
           {children}
         </main>
       </div>
