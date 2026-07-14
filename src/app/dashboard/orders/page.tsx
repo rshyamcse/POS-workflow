@@ -39,8 +39,6 @@ export default function OrdersPage() {
   const [menuSearchQuery, setMenuSearchQuery] = useState('');
 
   // Form Fields inside New Order Modal
-  const [entryMode, setEntryMode] = useState<'menu' | 'manual'>('menu');
-  const [manualItemName, setManualItemName] = useState<string>('');
   const [selectedCategoryId, setSelectedCategoryId] = useState<string>('');
   const [selectedMenuItemId, setSelectedMenuItemId] = useState<string>('');
   const [quantity, setQuantity] = useState<number>(1);
@@ -103,8 +101,6 @@ export default function OrdersPage() {
     const randomNum = Math.floor(100000 + Math.random() * 900000);
     setPreviewOrderNumber(`#${randomNum}`);
     setCurrentOrderItems([]);
-    setEntryMode('menu');
-    setManualItemName('');
     setSelectedCategoryId('');
     setSelectedMenuItemId('');
     setMenuSearchQuery('');
@@ -121,7 +117,7 @@ export default function OrdersPage() {
   });
 
   const handleAddItem = () => {
-    if (entryMode === 'menu') {
+    if (selectedMenuItemId) {
       const selectedMenuObj = menu.find(m => m.id === selectedMenuItemId);
       if (!selectedMenuObj) return;
 
@@ -135,18 +131,18 @@ export default function OrdersPage() {
         }
       ]);
       setSelectedMenuItemId('');
-    } else {
-      if (!manualItemName.trim()) return;
+      setMenuSearchQuery('');
+    } else if (menuSearchQuery.trim()) {
       setCurrentOrderItems([
         ...currentOrderItems,
         {
           menuItemId: `manual-${Date.now()}`,
-          name: manualItemName.trim(),
+          name: menuSearchQuery.trim(),
           quantity,
           notes: notes.trim(),
         }
       ]);
-      setManualItemName('');
+      setMenuSearchQuery('');
     }
 
     setQuantity(1);
@@ -311,93 +307,79 @@ export default function OrdersPage() {
 
               {/* LEFT PANE: Menu & Search */}
               <div className="w-full md:w-[60%] border-r border-border/60 flex flex-col bg-card shrink-0">
-                <div className="p-5 flex border-b border-border/50 gap-2 shrink-0">
-                </div>
-
                 <div className="p-5 space-y-5 flex-1 overflow-y-auto scrollbar-thin">
-                  {entryMode === 'menu' ? (
-                    <>
-                      <div className="relative">
-                        <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                        <Input
-                          placeholder="Search menu items instantly..."
-                          value={menuSearchQuery}
-                          onChange={(e) => {
-                            setMenuSearchQuery(e.target.value);
+                  <div className="relative">
+                    <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                    <Input
+                      placeholder="Search menu or enter custom item name..."
+                      value={menuSearchQuery}
+                      onChange={(e) => {
+                        setMenuSearchQuery(e.target.value);
+                        setSelectedMenuItemId('');
+                      }}
+                      className="pl-10 bg-secondary/30 border-border/80 h-12 rounded-xl text-foreground font-bold shadow-sm"
+                    />
+                  </div>
+
+                  {/* <div className="space-y-2">
+                    <label className="text-xs font-black text-muted-foreground uppercase tracking-widest">Category Chips</label>
+                    <div className="flex flex-wrap gap-2">
+                      <button
+                        onClick={() => {
+                          setSelectedCategoryId('');
+                          setSelectedMenuItemId('');
+                        }}
+                        className={cn(
+                          "px-4 py-2 rounded-xl text-[13px] font-bold transition-all border",
+                          selectedCategoryId === '' ? "bg-foreground text-background shadow-md border-foreground" : "bg-secondary text-muted-foreground border-border hover:bg-secondary/80"
+                        )}
+                      >
+                        All
+                      </button>
+                      {categories.map(cat => (
+                        <button
+                          key={cat.id}
+                          onClick={() => {
+                            setSelectedCategoryId(cat.id);
                             setSelectedMenuItemId('');
                           }}
-                          className="pl-10 bg-secondary/30 border-border/80 h-12 rounded-xl text-foreground font-bold shadow-sm"
-                        />
-                      </div>
-
-                      <div className="space-y-2">
-                        <label className="text-xs font-black text-muted-foreground uppercase tracking-widest">Category Chips</label>
-                        <div className="flex flex-wrap gap-2">
-                          <button
-                            onClick={() => {
-                              setSelectedCategoryId('');
-                              setSelectedMenuItemId('');
-                            }}
-                            className={cn(
-                              "px-4 py-2 rounded-xl text-[13px] font-bold transition-all border",
-                              selectedCategoryId === '' ? "bg-foreground text-background shadow-md border-foreground" : "bg-secondary text-muted-foreground border-border hover:bg-secondary/80"
-                            )}
-                          >
-                            All
-                          </button>
-                          {categories.map(cat => (
-                            <button
-                              key={cat.id}
-                              onClick={() => {
-                                setSelectedCategoryId(cat.id);
-                                setSelectedMenuItemId('');
-                              }}
-                              className={cn(
-                                "px-4 py-2 rounded-xl text-[13px] font-bold transition-all border",
-                                selectedCategoryId === cat.id ? "bg-foreground text-background shadow-md border-foreground" : "bg-secondary text-muted-foreground border-border hover:bg-secondary/80"
-                              )}
-                            >
-                              {cat.name}
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-
-                      <div className="space-y-2">
-                        <label className="text-xs font-black text-muted-foreground uppercase tracking-widest">Menu Selection</label>
-                        <select
-                          size={6}
-                          className="flex w-full rounded-[14px] border border-border/80 bg-secondary/10 px-3 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary font-bold text-foreground overflow-y-auto scrollbar-thin"
-                          value={selectedMenuItemId}
-                          onChange={(e) => setSelectedMenuItemId(e.target.value)}
-                        >
-                          {filteredMenuItems.length === 0 && (
-                            <option disabled>No items found.</option>
+                          className={cn(
+                            "px-4 py-2 rounded-xl text-[13px] font-bold transition-all border",
+                            selectedCategoryId === cat.id ? "bg-foreground text-background shadow-md border-foreground" : "bg-secondary text-muted-foreground border-border hover:bg-secondary/80"
                           )}
-                          {filteredMenuItems.map(item => (
-                            <option key={item.id} value={item.id} className="py-2.5 px-3 rounded-lg hover:bg-primary hover:text-primary-foreground mb-1">
-                              {item.name}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
-                    </>
-                  ) : (
-                    <div className="space-y-4 animate-in fade-in slide-in-from-bottom-2 duration-300">
-                      <div className="space-y-2">
-                        <label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">Item Name (Custom)</label>
-                        <Input
-                          placeholder="Type custom item name..."
-                          value={manualItemName}
-                          onChange={(e) => setManualItemName(e.target.value)}
-                          className="bg-secondary/30 border-border/80 h-12 rounded-xl text-foreground font-bold shadow-sm"
-                          autoFocus
-                        />
-                      </div>
+                        >
+                          {cat.name}
+                        </button>
+                      ))}
                     </div>
-                  )}
+                  </div>
 
-                  {(entryMode === 'manual' || selectedMenuItemId) && (
+                  <div className="space-y-2">
+                    <label className="text-xs font-black text-muted-foreground uppercase tracking-widest">Menu Selection</label>
+                    <select
+                      size={6}
+                      className="flex w-full rounded-[14px] border border-border/80 bg-secondary/10 px-3 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary font-bold text-foreground overflow-y-auto scrollbar-thin"
+                      value={selectedMenuItemId}
+                      onChange={(e) => {
+                        setSelectedMenuItemId(e.target.value);
+                        const selectedMenuObj = menu.find(m => m.id === e.target.value);
+                        if (selectedMenuObj) {
+                          setMenuSearchQuery(selectedMenuObj.name);
+                        }
+                      }}
+                    >
+                      {filteredMenuItems.length === 0 && (
+                        <option disabled>No items found. Enter details below to add as custom item.</option>
+                      )}
+                      {filteredMenuItems.map(item => (
+                        <option key={item.id} value={item.id} className="py-2.5 px-3 rounded-lg hover:bg-primary hover:text-primary-foreground mb-1">
+                          {item.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div> */}
+
+                  {(selectedMenuItemId || (!selectedMenuItemId && menuSearchQuery.trim())) && (
                     <div className="animate-in fade-in slide-in-from-bottom-4 duration-300 space-y-4 pt-2 border-t border-border/50">
                       <div className="grid grid-cols-[120px_1fr] gap-4">
                         <div className="space-y-2">
@@ -421,17 +403,22 @@ export default function OrdersPage() {
                             value={notes}
                             onChange={(e) => setNotes(e.target.value)}
                             className="w-full bg-card border border-border/80 min-h-[40px] p-2 rounded-[10px] text-sm font-semibold placeholder:text-muted-foreground/60 resize-none"
-                            rows={entryMode === 'manual' ? 2 : 1}
+                            rows={selectedMenuItemId ? 1 : 2}
                           />
                         </div>
                       </div>
                       <Button
                         type="button"
-                        disabled={entryMode === 'manual' && !manualItemName.trim()}
                         onClick={handleAddItem}
-                        className="w-full rounded-[14px] h-12 bg-primary text-primary-foreground font-black hover:bg-primary/90 text-[15px] shadow-lg shadow-primary/20 disabled:opacity-50"
+                        className={cn(
+                          "w-full rounded-[14px] h-12 text-primary-foreground font-black text-[15px] shadow-lg transition-all",
+                          selectedMenuItemId
+                            ? "bg-primary hover:bg-primary/90 shadow-primary/20"
+                            : "bg-orange-500 hover:bg-orange-600 shadow-orange-500/20"
+                        )}
                       >
-                        <Plus className="h-5 w-5 mr-2" /> Add Item
+                        <Plus className="h-5 w-5 mr-2" />
+                        {selectedMenuItemId ? "Add Menu Item" : "Add Custom Item"}
                       </Button>
                     </div>
                   )}

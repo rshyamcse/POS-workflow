@@ -17,12 +17,10 @@ export default function KitchenDisplayPage() {
     if (len <= 1) setGridClass('grid-cols-1 grid-rows-1');
     else if (len === 2) setGridClass('grid-cols-2 grid-rows-1');
     else if (len === 3) setGridClass('grid-cols-3 grid-rows-1');
-    else if (len === 4) setGridClass('grid-cols-2 grid-rows-2');
-    else if (len <= 6) setGridClass('grid-cols-3 grid-rows-2');
-    else if (len <= 8) setGridClass('grid-cols-4 grid-rows-2');
-    else if (len <= 9) setGridClass('grid-cols-3 grid-rows-3');
-    else if (len <= 12) setGridClass('grid-cols-4 grid-rows-3');
-    else setGridClass('grid-cols-5 grid-rows-3');
+    else if (len === 4) setGridClass('grid-cols-4 grid-rows-1');
+    else if (len === 5) setGridClass('grid-cols-5 grid-rows-1');
+    else if (len === 6) setGridClass('grid-cols-6 grid-rows-1');
+    else setGridClass('grid-flow-col auto-cols-[320px] grid-rows-1 overflow-x-auto');
   }, [kitchenOrders.length]);
 
   return (

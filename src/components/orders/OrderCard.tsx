@@ -56,7 +56,7 @@ export function OrderCard({ order, mode, onUpdateStatus, className = '' }: Order
   const renderActions = () => {
     if (!onUpdateStatus) return null;
 
-    if (mode === 'orders' || mode === 'dashboard' || mode === 'kitchen') {
+    if (mode === 'orders' || mode === 'dashboard') {
       if (order.status === 'NEW') {
         return (
           <Button
@@ -122,33 +122,41 @@ export function OrderCard({ order, mode, onUpdateStatus, className = '' }: Order
       )}
     >
       {/* LINE 1: Header - Flex Wrap for tight spaces */}
-      <div className={cn(
-        "flex flex-wrap items-center gap-2 p-4 pb-3 shrink-0",
-        mode === 'waiting' && "flex-col justify-center flex-1 h-full p-8"
-      )}>
-        <span className={cn(
-          "font-black leading-none text-foreground tracking-tighter truncate",
-          mode === 'waiting' ? "text-6xl sm:text-8xl lg:text-9xl mb-4" : "text-[18px] sm:text-[20px] max-w-[130px]"
-        )}>
-          {order.orderNumber}
-        </span>
-        <div className={cn(
-          "rounded-[6px] font-black uppercase tracking-wider flex items-center justify-center shrink-0",
-          colors.badgeBg,
-          mode === 'waiting' ? "px-6 py-3 text-3xl sm:text-5xl lg:text-6xl my-4 rounded-[16px]" : "px-2 py-1 text-[10px]"
-        )}>
-          {order.status}
+      {mode === 'kitchen' ? (
+        <div className="p-4 sm:p-5 border-b-2 border-border/60 bg-secondary/20 shrink-0 flex items-center justify-center">
+          <span className="text-3xl sm:text-4xl xl:text-5xl font-black text-foreground tracking-tight">
+            {order.orderNumber}
+          </span>
         </div>
-        <span className={cn(
-          "font-semibold text-muted-foreground shrink-0 text-right",
-          mode === 'waiting' ? "text-2xl sm:text-4xl mt-auto" : "text-[11px] sm:text-[12px] ml-auto"
+      ) : (
+        <div className={cn(
+          "flex flex-wrap items-center gap-2 p-4 pb-3 shrink-0",
+          mode === 'waiting' && "flex-col justify-center flex-1 h-full p-8"
         )}>
-          {timeDisplay}
-        </span>
-      </div>
+          <span className={cn(
+            "font-black leading-none text-foreground tracking-tighter truncate",
+            mode === 'waiting' ? "text-6xl sm:text-8xl lg:text-9xl mb-4" : "text-[18px] sm:text-[20px] max-w-[130px]"
+          )}>
+            {order.orderNumber}
+          </span>
+          <div className={cn(
+            "rounded-[6px] font-black uppercase tracking-wider flex items-center justify-center shrink-0",
+            colors.badgeBg,
+            mode === 'waiting' ? "px-6 py-3 text-3xl sm:text-5xl lg:text-6xl my-4 rounded-[16px]" : "px-2 py-1 text-[10px]"
+          )}>
+            {order.status}
+          </div>
+          <span className={cn(
+            "font-semibold text-muted-foreground shrink-0 text-right",
+            mode === 'waiting' ? "text-2xl sm:text-4xl mt-auto" : "text-[11px] sm:text-[12px] ml-auto"
+          )}>
+            {timeDisplay}
+          </span>
+        </div>
+      )}
 
       {/* LINE 2: Customer Info */}
-      {mode !== 'waiting' && (
+      {mode !== 'waiting' && mode !== 'kitchen' && (
         <div className="px-4 py-2.5 bg-secondary/20 border-y border-border/40 shrink-0 flex items-center gap-2">
           <div className="w-6 h-6 rounded-full bg-secondary border border-border/60 flex items-center justify-center shrink-0">
             <User className="w-3.5 h-3.5 text-muted-foreground" />
@@ -162,19 +170,22 @@ export function OrderCard({ order, mode, onUpdateStatus, className = '' }: Order
 
       {/* LINE 3: Items */}
       {mode !== 'waiting' && (
-        <div className="flex-1 p-4 flex flex-col gap-4 bg-card overflow-y-auto min-h-0">
+        <div className={cn(
+          "flex-1 p-4 flex flex-col gap-4 bg-card overflow-y-auto min-h-0",
+          mode === 'kitchen' && "p-5 gap-5"
+        )}>
           {order.items.map((item, idx) => (
             <div key={item.id || idx} className="flex flex-col pb-4 border-b border-border/40 last:border-0 last:pb-0">
-              <div className="flex justify-between items-start gap-2">
+              <div className="flex justify-between items-start gap-3">
                 <span className={cn(
                   "font-bold text-foreground leading-tight text-[14px] sm:text-[15px] flex-1 break-words",
-                  isFullScreenMode && "text-[24px]"
+                  mode === 'kitchen' ? "text-2xl sm:text-3xl font-black" : (isFullScreenMode && "text-[24px]")
                 )}>
                   {item.name}
                 </span>
                 <span className={cn(
                   "font-black bg-secondary text-foreground px-2.5 py-1 rounded-[8px] border border-border/50 shrink-0 text-[12px] sm:text-[13px] ml-2",
-                  isFullScreenMode && "text-[20px]"
+                  mode === 'kitchen' ? "text-xl sm:text-2xl px-3.5 py-1 rounded-xl bg-foreground text-background" : (isFullScreenMode && "text-[20px]")
                 )}>
                   ×{item.quantity}
                 </span>
@@ -184,7 +195,7 @@ export function OrderCard({ order, mode, onUpdateStatus, className = '' }: Order
                 <div className={cn(
                   "mt-2.5 text-[12px] font-semibold italic px-3 py-2 rounded-[8px] whitespace-pre-line border-l-2",
                   colors.noteBg,
-                  isFullScreenMode && "text-[18px] mt-4 px-4 py-3"
+                  mode === 'kitchen' ? "text-lg sm:text-xl font-bold mt-3 px-4 py-2.5 rounded-xl border-l-4 bg-orange-500/10 text-orange-400 border-orange-500" : (isFullScreenMode && "text-[18px] mt-4 px-4 py-3")
                 )}>
                   {item.notes}
                 </div>
