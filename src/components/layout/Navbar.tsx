@@ -115,11 +115,11 @@ export function Navbar() {
           <DropdownMenuContent align="center" className="w-56 rounded-xl border-border/60 shadow-xl bg-background p-2">
             <DropdownMenuItem className="flex justify-between items-center px-3 py-2.5 rounded-lg cursor-pointer focus:bg-blue-500/10 focus:text-blue-500 transition-colors group">
               <div className="flex items-center gap-3 font-semibold text-foreground group-focus:text-blue-500">
-                <Sparkles className="w-4 h-4 text-blue-500" /> New
+                <Sparkles className="w-4 h-4 text-blue-500" /> New Order
               </div>
               <span className="font-black text-[15px]">{counts.NEW}</span>
             </DropdownMenuItem>
-            
+
             <DropdownMenuItem className="flex justify-between items-center px-3 py-2.5 rounded-lg cursor-pointer focus:bg-orange-500/10 focus:text-orange-500 transition-colors group">
               <div className="flex items-center gap-3 font-semibold text-foreground group-focus:text-orange-500">
                 <Utensils className="w-4 h-4 text-orange-500" /> Preparing
@@ -135,7 +135,7 @@ export function Navbar() {
             </DropdownMenuItem>
 
             <DropdownMenuSeparator className="my-1.5 bg-border/50" />
-            
+
             <DropdownMenuItem className="flex justify-between items-center px-3 py-2.5 rounded-lg cursor-pointer focus:bg-secondary focus:text-foreground transition-colors group">
               <div className="flex items-center gap-3 font-semibold text-muted-foreground group-focus:text-foreground">
                 <Bike className="w-4 h-4" /> Delivered
@@ -166,6 +166,6 @@ export function Navbar() {
           JD
         </div>
       </div>
-    </header>
+    </header >
   );
 }

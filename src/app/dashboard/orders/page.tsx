@@ -218,7 +218,7 @@ export default function OrdersPage() {
         {(['ALL', 'NEW', 'PREPARING', 'READY', 'DELIVERED'] as const).map(tab => {
           const isActive = activeTab === tab;
           const count = counts[tab];
-          const label = tab === 'ALL' ? 'All' : tab === 'NEW' ? 'New' : tab === 'PREPARING' ? 'Preparing' : tab === 'READY' ? 'Ready' : 'Delivered';
+          const label = tab === 'ALL' ? 'All' : tab === 'NEW' ? 'New Order' : tab === 'PREPARING' ? 'Preparing' : tab === 'READY' ? 'Ready' : 'Delivered';
 
           let colorTheme = '';
           if (isActive) {

@@ -26,14 +26,14 @@ export default function KitchenDisplayPage() {
   };
 
   return (
-    <div className="h-screen w-screen bg-background p-3 sm:p-4 flex flex-col overflow-hidden select-none">
+    <div className="h-screen w-screen bg-[#0F1115] text-white p-3 sm:p-4 flex flex-col overflow-hidden select-none font-sans">
       {kitchenOrders.length === 0 ? (
-        <div className="flex flex-col items-center justify-center h-full w-full text-center bg-card/20 rounded-[24px] border border-border/40 border-dashed p-12">
-          <Utensils className="h-24 w-24 text-muted-foreground/30 mb-6 animate-pulse" />
-          <h2 className="text-5xl sm:text-7xl font-black text-foreground tracking-tight">
+        <div className="flex flex-col items-center justify-center h-full w-full text-center bg-[#181A20] rounded-[24px] border border-zinc-800 p-12 shadow-2xl">
+          <Utensils className="h-24 w-24 text-zinc-600 mb-6 animate-pulse" />
+          <h2 className="text-5xl sm:text-7xl font-black text-white tracking-tight">
             No Active Kitchen Orders
           </h2>
-          <p className="text-2xl sm:text-3xl text-muted-foreground mt-4 font-bold max-w-2xl">
+          <p className="text-2xl sm:text-3xl text-zinc-400 mt-4 font-bold max-w-2xl">
             Kitchen queue is completely clear. New orders will immediately appear here.
           </p>
         </div>

@@ -152,7 +152,7 @@ export function OrderCard({ order, mode, onUpdateStatus, className = '' }: Order
     .map(item => `${item.name}: ${item.notes}`);
 
   // ==========================================
-  // MODE 1: WAITING DISPLAY TV (Horizontal 1 Line = 1 Container, Center Status Text, Compact Waiting + CreatedAt Below)
+  // MODE 1: WAITING DISPLAY TV (OLED Commercial POS KDS - Horizontal 1 Line = 1 Container)
   // ==========================================
   if (mode === 'waiting') {
     const isReady = order.status === 'READY';
@@ -161,35 +161,37 @@ export function OrderCard({ order, mode, onUpdateStatus, className = '' }: Order
     return (
       <div
         className={cn(
-          "h-full w-full min-h-0 min-w-0 rounded-[18px] border-[1px] bg-card text-card-foreground shadow-md transition-all duration-150 p-4 sm:p-6 flex flex-row items-center justify-between gap-4 sm:gap-6 overflow-hidden relative",
-          colors.cardBorder,
-          colors.leftBorder,
+          "h-full w-full min-h-0 min-w-0 rounded-[18px] bg-[#181A20] text-white shadow-xl transition-all duration-150 p-5 sm:p-7 flex flex-row items-center justify-between gap-4 sm:gap-8 overflow-hidden relative border-0 border-l-[4px] font-sans",
+          isReady ? "border-l-[#22C55E]" : "border-l-[#F97316]",
           className
         )}
       >
-        {/* Left Section: Order Number ONLY (Status badge removed as requested) */}
+        {/* Left Section: Order Number ONLY */}
         <div className="flex items-center shrink-0">
-          <span className="text-[40px] sm:text-[60px] lg:text-[72px] font-black tracking-tight text-foreground leading-none shrink-0">
+          <span className="text-[44px] sm:text-[64px] lg:text-[76px] font-black tracking-tight text-white leading-none shrink-0 font-sans">
             {order.orderNumber}
           </span>
         </div>
 
-        {/* Center Section: Status Centered as Bold Text Format (Half Size) */}
+        {/* Center Section: Status as Small Text Format (Not Button) */}
         <div className="flex-1 flex items-center justify-center min-w-0 px-4 truncate text-center">
-          <span className={cn(
-            "text-[14px] sm:text-[20px] lg:text-[26px] font-black tracking-wider uppercase leading-none truncate px-2",
-            isReady ? "text-green-500 animate-pulse" : "text-orange-500"
-          )}>
-            {isReady ? "READY FOR PICKUP" : "PREPARING ORDER"}
+          <span
+            className={cn(
+              "font-black uppercase tracking-widest text-[16px] sm:text-[20px] lg:text-[24px] truncate leading-none",
+              isReady ? "text-[#22C55E] animate-pulse" : order.status === 'NEW' ? "text-[#3B82F6]" : "text-[#F97316]"
+            )}
+          >
+            {isReady ? "READY" : order.status === 'NEW' ? "NEW ORDER" : "PREPARING"}
           </span>
         </div>
 
-        {/* Right Section: Compact Waiting Time with CreatedAt Right Below It */}
-        <div className="flex flex-col items-end justify-center gap-1 shrink-0 ml-auto">
-          <span className="bg-secondary/90 text-foreground px-4 sm:px-6 py-1.5 sm:py-2.5 rounded-[14px] border border-border/70 font-black text-[18px] sm:text-[24px] lg:text-[28px] tracking-wide shadow-sm shrink-0 whitespace-nowrap">
-            Waiting : <span className={cn(isReady ? "text-green-500" : "text-orange-500")}>{waitingTimeStr}</span>
-          </span>
-          <span className="text-xs sm:text-[13px] font-bold text-muted-foreground/80 uppercase tracking-wider shrink-0 whitespace-nowrap">
+        {/* Right Section: Kitchen Timing Button Type Design (⏱ + Time) and CreatedAt Below */}
+        <div className="flex flex-col items-end justify-center gap-1.5 shrink-0 ml-auto font-sans">
+          <div className="flex items-center gap-2 sm:gap-3 bg-[#232731] text-white px-5 sm:px-7 py-2 sm:py-3 rounded-[16px] border border-zinc-700/80 font-black text-[20px] sm:text-[28px] lg:text-[32px] tracking-tight shadow-lg shrink-0 whitespace-nowrap">
+            <span className="text-[22px] sm:text-[30px] leading-none">⏱</span>
+            <span className="font-mono font-black">{waitingTimeStr}</span>
+          </div>
+          <span className="text-xs sm:text-[13px] font-bold text-zinc-400 uppercase tracking-wider shrink-0 whitespace-nowrap mr-1">
             Created: {format(order.createdAt, 'hh:mm a')}
           </span>
         </div>
@@ -198,61 +200,79 @@ export function OrderCard({ order, mode, onUpdateStatus, className = '' }: Order
   }
 
   // ==========================================
-  // MODE 2: KITCHEN DISPLAY TV (Horizontal 1 Line = 1 Order, Center Items, Compact Timer + CreatedAt Below)
+  // MODE 2: KITCHEN DISPLAY TV (OLED Commercial POS KDS - Horizontal 1 Line = 1 Order)
   // ==========================================
   if (mode === 'kitchen') {
     const timerStr = elapsed || '00:00';
+    const isNew = order.status === 'NEW';
 
     return (
       <div
         className={cn(
-          "h-full w-full min-h-0 min-w-0 rounded-[18px] border-[1px] bg-card text-card-foreground shadow-md transition-all duration-150 p-4 sm:p-6 flex flex-row items-center justify-between gap-4 sm:gap-6 overflow-hidden relative",
-          colors.cardBorder,
-          colors.leftBorder,
+          "h-full w-full min-h-0 min-w-0 rounded-[18px] bg-[#181A20] text-white shadow-xl transition-all duration-150 p-5 sm:p-7 flex flex-row items-center justify-between gap-4 sm:gap-6 overflow-hidden relative border-0 border-l-[4px] font-sans",
+          isNew ? "border-l-[#3B82F6]" : "border-l-[#F97316]",
           className
         )}
       >
         {/* Left Section: Order Number ONLY (Status badge removed as requested) */}
         <div className="flex items-center shrink-0">
-          <span className="text-[40px] sm:text-[60px] lg:text-[72px] font-black tracking-tight text-foreground leading-none shrink-0">
+          <span className="text-[44px] sm:text-[64px] lg:text-[76px] font-black tracking-tight text-white leading-none shrink-0 font-sans">
             {order.orderNumber}
           </span>
         </div>
 
-        {/* Middle Section: Centered Items & Quantities */}
-        <div className="flex-1 flex flex-wrap items-center justify-center gap-x-4 sm:gap-x-6 gap-y-1.5 px-4 sm:px-8 min-w-0 overflow-hidden max-h-full py-1 text-center">
-          {order.items.map((item, idx) => (
-            <div
-              key={item.id || idx}
-              className="inline-flex items-center gap-1.5 sm:gap-2 shrink-0"
-            >
-              <span className="font-black text-foreground tracking-tight text-[22px] sm:text-[30px] lg:text-[36px] whitespace-nowrap leading-none">
-                {item.name}
-              </span>
-              <span className="font-black text-orange-500 tracking-tight text-[22px] sm:text-[30px] lg:text-[36px] shrink-0 whitespace-nowrap leading-none">
-                ×{item.quantity}
-              </span>
-              {idx < order.items.length - 1 && (
-                <span className="text-muted-foreground/40 font-black text-[22px] sm:text-[30px] lg:text-[36px] mx-1 sm:mx-2.5 select-none leading-none">
-                  •
-                </span>
-              )}
-            </div>
-          ))}
+        {/* Middle Section: Centered Items, Quantities & Inline Special Request/Note (No Vertical Clipping) */}
+        <div className="flex-1 flex flex-wrap items-center justify-center gap-x-6 sm:gap-x-8 gap-y-2 px-4 sm:px-8 min-w-0 overflow-hidden max-h-full py-1 text-center font-sans">
+          {order.items.map((item, idx) => {
+            const itemHasNotes = item.notes && item.notes.trim().length > 0;
+            return (
+              <div
+                key={item.id || idx}
+                className="inline-flex items-center gap-2 sm:gap-3 shrink-0 flex-wrap justify-center"
+              >
+                <div className="inline-flex items-center gap-2 sm:gap-3">
+                  <span className="font-black text-white tracking-tight text-[22px] sm:text-[30px] lg:text-[36px] whitespace-nowrap leading-none">
+                    {item.name}
+                  </span>
+                  <span className="font-black text-[#F97316] tracking-tight text-[22px] sm:text-[30px] lg:text-[36px] shrink-0 whitespace-nowrap leading-none">
+                    ×{item.quantity}
+                  </span>
+                </div>
 
-          {hasNotes && (
-            <div className="inline-flex items-center gap-1.5 bg-orange-500/15 border border-orange-500/30 text-orange-500 text-[16px] sm:text-[20px] font-extrabold px-3.5 py-1 rounded-xl whitespace-nowrap ml-2 shadow-sm">
-              <span>Notes: {allNotes.join(' • ')}</span>
-            </div>
-          )}
+                {itemHasNotes && (() => {
+                  let cleanNote = item.notes ? item.notes.trim() : '';
+                  if (cleanNote && item.name) {
+                    const escapedName = item.name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                    cleanNote = cleanNote.replace(new RegExp(`^${escapedName}\\s*[:\\-•]\\s*`, 'i'), '').trim();
+                  }
+                  if (!cleanNote) cleanNote = item.notes.trim();
+                  if (!cleanNote) return null;
+
+                  return (
+                    <span className="text-[#FACC15] bg-[#EAB308]/20 border border-[#FACC15]/40 px-3.5 py-1 rounded-lg text-[15px] sm:text-[18px] lg:text-[22px] font-black uppercase tracking-wider shadow-md whitespace-nowrap leading-none inline-flex items-center gap-1.5 shrink-0">
+                      <span className="text-[#FACC15] font-extrabold text-[16px] sm:text-[20px]">+</span>
+                      <span>{cleanNote}</span>
+                    </span>
+                  );
+                })()}
+
+                {idx < order.items.length - 1 && (
+                  <span className="text-zinc-600 font-black text-[22px] sm:text-[30px] lg:text-[36px] mx-1 sm:mx-2.5 select-none leading-none self-center">
+                    •
+                  </span>
+                )}
+              </div>
+            );
+          })}
         </div>
 
-        {/* Right Section: Compact Timer with CreatedAt Right Below It */}
-        <div className="flex flex-col items-end justify-center gap-1 shrink-0 ml-auto">
-          <span className="bg-secondary/90 text-foreground px-4 sm:px-5 py-1.5 sm:py-2 rounded-[12px] border border-border/70 font-black text-[18px] sm:text-[22px] lg:text-[24px] tracking-wide shadow-sm shrink-0 whitespace-nowrap">
-            Timer : {timerStr}
-          </span>
-          <span className="text-xs sm:text-[13px] font-bold text-muted-foreground/80 uppercase tracking-wider shrink-0 whitespace-nowrap">
+        {/* Right Section: Larger Preparation Timer with ⏱ Icon and CreatedAt Below */}
+        <div className="flex flex-col items-end justify-center gap-1.5 shrink-0 ml-auto font-sans">
+          <div className="flex items-center gap-2 sm:gap-3 bg-[#232731] text-white px-5 sm:px-7 py-2 sm:py-3 rounded-[16px] border border-zinc-700/80 font-black text-[20px] sm:text-[28px] lg:text-[32px] tracking-tight shadow-lg shrink-0 whitespace-nowrap">
+            <span className="text-[22px] sm:text-[30px] leading-none">⏱</span>
+            <span className="font-mono font-black">{timerStr}</span>
+          </div>
+          <span className="text-xs sm:text-[13px] font-bold text-zinc-400 uppercase tracking-wider shrink-0 whitespace-nowrap mr-1">
             Created: {format(order.createdAt, 'hh:mm a')}
           </span>
         </div>
@@ -283,7 +303,7 @@ export function OrderCard({ order, mode, onUpdateStatus, className = '' }: Order
             "rounded-[10px] font-black uppercase tracking-wider px-3.5 py-1 text-[13px] sm:text-[16px] shrink-0",
             colors.badgeBg
           )}>
-            {order.status}
+            {order.status === 'NEW' ? 'NEW ORDER' : order.status}
           </div>
         </div>
 
