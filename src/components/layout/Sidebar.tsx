@@ -53,10 +53,10 @@ export function Sidebar({ onItemClick }: { onItemClick?: () => void }) {
           {!collapsed && (
             <div className="flex flex-col flex-1 overflow-hidden">
               <span className="text-lg font-black text-foreground truncate">
-                Bloom cafe
+                QSW Cafe
               </span>
               <div className="flex items-center text-xs font-semibold text-muted-foreground mt-0.5 gap-1.5">
-                <span className="text-green-500 flex items-center gap-1"><Circle className="w-2 h-2 fill-green-500" /> Online</span>
+                {/* <span className="text-green-500 flex items-center gap-1"><Circle className="w-2 h-2 fill-green-500" /> Online</span> */}
                 <span>•</span>
                 <span>Evening Shift</span>
               </div>
@@ -140,8 +140,8 @@ export function Sidebar({ onItemClick }: { onItemClick?: () => void }) {
               <User className="w-4 h-4 text-primary" />
             </div>
             <div className="flex flex-col truncate">
-              <span className="text-sm font-bold text-foreground">Jane Doe</span>
-              <span className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">Cashier</span>
+              <span className="text-sm font-bold text-foreground">Radheshyam Kushwaha</span>
+              <span className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">Owner</span>
             </div>
           </div>
         )}

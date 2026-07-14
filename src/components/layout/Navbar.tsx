@@ -75,7 +75,7 @@ export function Navbar() {
         {/* Compact Live Badge */}
         <div className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-border bg-secondary/50 shadow-sm shrink-0">
           <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse shadow-[0_0_8px_rgba(34,197,94,0.8)]" />
-          <span className="text-[11px] font-black tracking-wider text-foreground uppercase">LIVE</span>
+          {/* <span className="text-[11px] font-black tracking-wider text-foreground uppercase">LIVE</span> */}
           <span className="text-[11px] font-bold text-muted-foreground hidden sm:block">Online</span>
         </div>
 
